@@ -19,9 +19,15 @@ var setup = function() {
 
 	gCanvas.attr('width', 1200);
 	gCanvas.attr('height', 720);
+	gCanvas.attr('tabindex', 1);
+	gCanvas.focus();
+
+	gInputEngine.setup(gCanvas);
 }
 
 var animate = function() {
+	gInputEngine.update();
+
 	// Store the current transformation matrix
 	ctx.save();
 
