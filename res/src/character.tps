@@ -141,15 +141,18 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>char0.png</filename>
-            <filename>char1.png</filename>
-            <filename>char2.png</filename>
-            <filename>char0.png</filename>
-            <filename>char1.png</filename>
-            <filename>char2.png</filename>
-            <filename>char0.png</filename>
-            <filename>char1.png</filename>
-            <filename>char2.png</filename>
+            <filename>char_left_move2.png</filename>
+            <filename>char_left_still.png</filename>
+            <filename>char_right_move1.png</filename>
+            <filename>char_right_move2.png</filename>
+            <filename>char_right_still.png</filename>
+            <filename>char_up_move1.png</filename>
+            <filename>char_up_move2.png</filename>
+            <filename>char_up_still.png</filename>
+            <filename>char_down_move1.png</filename>
+            <filename>char_down_move2.png</filename>
+            <filename>char_down_still.png</filename>
+            <filename>char_left_move1.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
