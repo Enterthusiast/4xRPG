@@ -1,53 +1,141 @@
 
+var gFRAMERATE = 60
+var TILESIZE = 32;
+var XTILES = 24;
+var YTILES = 16;
 
-var gSpriteSheets = {};
-
-var playerSprites = ['char0.png','char1.png','char2.png', 'char1.png'];
-
-var gCanvas = null;
-var ctx = null;
-var frameRate = 50
-var framePeriod = 10000/ frameRate;
-var frame = 0;
-
-var playerX = 32;
-var playerY = 32;
-
-var setup = function() {
-	gCanvas = $('#game-canvas');
-	ctx = gCanvas[0].getContext('2d');
-
-	gCanvas.attr('width', 1200);
-	gCanvas.attr('height', 720);
-	gCanvas.attr('tabindex', 1);
-	gCanvas.focus();
-
-	gInputEngine.setup(gCanvas);
+if (window.performance.now) {
+    console.log("+++ Using high performance timer");
+    getTimestamp = function() { return window.performance.now(); };
+} else {
+    if (window.performance.webkitNow) {
+        console.log("+++ Using webkit high performance timer");
+        getTimestamp = function() { return window.performance.webkitNow(); };
+    } else {
+        console.log("+++ Using low performance timer");
+        getTimestamp = function() { return new Date().getTime(); };
+    }
 }
 
-var animate = function() {
-	gInputEngine.update();
+var lastTime = getTimestamp();
+var fpsCounter = getTimestamp();
+var msPerTick = 1000 / gFRAMERATE;
+var frames = 0;
+var ticks = 0;
+var unprocessed = 0;
+var gGame = null;
 
-	// Store the current transformation matrix
-	ctx.save();
+var GameRunner = function() {
+	var now = getTimestamp();
+	unprocessed += (now - lastTime) / msPerTick;
+	lastTime = now;
 
-	// Use the identity matrix while clearing the canvas
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	ctx.clearRect(0, 0, gCanvas.attr('width'), gCanvas.attr('height'));
+	while (unprocessed >= 1) {
+		ticks++;
+		gGame.tick();
+		unprocessed -=1;
+	}
 
-	// Restore the transform
-	ctx.restore();
-
-	// Draw the main character.
-	drawSprite(ctx, playerSprites[frame % playerSprites.length], playerX++, playerY++)
-
-	// Update current frame.
-	frame = (frame + 1) % 30;
+	frames++;
+	gGame.render()
+;
+	if (getTimestamp() - fpsCounter > 1000) {
+		fpsCounter += 1000;
+		console.log(ticks + " ticks, " + frames + " fps");
+		frames = 0;
+		ticks = 0
+	}
 }
+
+Game = Class.extend({
+	canvas: null,
+	ctx: null,
+	level: null,
+	gameTime: 0,
+	running: false,
+	player: false,
+
+	init: function() {
+		this.canvas = $('#game-canvas');
+		this.ctx = this.canvas[0].getContext('2d');
+
+		this.canvas.attr('width', XTILES * TILESIZE);
+		this.canvas.attr('height', YTILES * TILESIZE);
+		this.canvas.attr('tabindex', 1);
+		this.canvas.focus();
+
+		gInputHandler = new InputHandler(this.canvas);
+
+		this.level = new Level();
+		this.player = new Player(this.level, gInputHandler);
+		this.player.x = this.canvas.attr('width') / 2;
+		this.player.y = this.canvas.attr('height') / 2;
+	},
+
+	start: function() {
+		this.running = true;
+
+		window.setInterval(GameRunner, 2);
+	},
+
+	hasFocus: function() {
+		// todo ...
+		return true;
+	},
+
+	tick: function() {
+		this.tickCount++;
+
+		if (!this.hasFocus()) {
+			gInputHandler.releaseAll();
+		} else {
+			this.gameTime++;
+
+			gInputHandler.tick();
+
+			this.level.tick();
+		}
+	},
+
+	renderFocusGUI: function() {
+		// todo ...
+	},
+
+	clearBackground: function() {
+		// Store the current transformation matrix
+		this.ctx.save();
+
+		// Use the identity matrix while clearing the canvas
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.ctx.clearRect(0, 0, this.canvas.attr('width'), this.canvas.attr('height'));
+
+		// Restore the transform
+		this.ctx.restore();
+	},
+
+	render: function() {
+		var screenW = this.canvas.attr('width');
+		var screenH = this.canvas.attr('height');
+		var xScroll = this.player.x - screenW / 2;
+		var yScroll = this.player.y - screenH / 2;
+
+		if (xScroll < XTILES) xScroll = XTILES;
+		if (yScroll < YTILES) yScroll = YTILES;
+		if (xScroll > this.level.w * XTILES - screenW - XTILES) xScroll = this.level.w * XTILES - screenW - XTILES;
+		if (yScroll > this.level.h * YTILES - screenH - YTILES) yScroll = this.level.h * YTILES - screenH - YTILES;
+
+		this.clearBackground();
+
+		this.level.renderBackground(this.ctx, xScroll, yScroll);
+		this.level.renderSprites(this.ctx, xScroll, yScroll);
+
+		if (!this.hasFocus()) renderFocusGUI();
+	}
+});
 
 $(document).ready(function() {
-	setup();
+	gGame = new Game();
 
-	setInterval(animate, framePeriod);
+	gGame.start();
 });
 
