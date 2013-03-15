@@ -96,12 +96,12 @@ Player = Class.extend({
 		this.move(xa, ya);
 	},
 
-	render: function(ctx, xScroll, yScroll) {
+	render: function(screen, xScroll, yScroll) {
 		// if (this.walkDist != 0)
 		// 	console.log("walkdist>>3: "+ ((this.walkDist >> 2) % playerSprites.length))
 
 		var tile = ((this.walkDist >> 3) % sprites[this.dir].length);
 
-		drawSprite(ctx, sprites[this.dir][tile], this.x, this.y)
+		screen.render(sprites[this.dir][tile], this.x / 32 - 1, this.y / 32 - 1);
 	}
 });

@@ -37,11 +37,11 @@ var GameRunner = function() {
 	}
 
 	frames++;
-	gGame.render()
-;
+	gGame.render();
+
 	if (getTimestamp() - fpsCounter > 1000) {
 		fpsCounter += 1000;
-		console.log(ticks + " ticks, " + frames + " fps");
+		// console.log(ticks + " ticks, " + frames + " fps");
 		frames = 0;
 		ticks = 0
 	}
@@ -63,10 +63,11 @@ Game = Class.extend({
 		this.canvas.attr('height', YTILES * TILESIZE);
 		this.canvas.attr('tabindex', 1);
 		this.canvas.focus();
+		this.screen = new Screen(this.ctx, XTILES, YTILES, TILESIZE);
 
 		gInputHandler = new InputHandler(this.canvas);
 
-		this.level = new Level();
+		this.level = new Level(16, 24, 'siryessir');
 		this.player = new Player(this.level, gInputHandler);
 		this.player.x = this.canvas.attr('width') / 2;
 		this.player.y = this.canvas.attr('height') / 2;
@@ -101,18 +102,6 @@ Game = Class.extend({
 		// todo ...
 	},
 
-	clearBackground: function() {
-		// Store the current transformation matrix
-		this.ctx.save();
-
-		// Use the identity matrix while clearing the canvas
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.ctx.clearRect(0, 0, this.canvas.attr('width'), this.canvas.attr('height'));
-
-		// Restore the transform
-		this.ctx.restore();
-	},
-
 	render: function() {
 		var screenW = this.canvas.attr('width');
 		var screenH = this.canvas.attr('height');
@@ -124,10 +113,10 @@ Game = Class.extend({
 		if (xScroll > this.level.w * XTILES - screenW - XTILES) xScroll = this.level.w * XTILES - screenW - XTILES;
 		if (yScroll > this.level.h * YTILES - screenH - YTILES) yScroll = this.level.h * YTILES - screenH - YTILES;
 
-		this.clearBackground();
+		this.screen.clearBackground();
 
-		this.level.renderBackground(this.ctx, xScroll, yScroll);
-		this.level.renderSprites(this.ctx, xScroll, yScroll);
+		this.level.renderBackground(this.screen, xScroll, yScroll);
+		this.level.renderSprites(this.screen, xScroll, yScroll);
 
 		if (!this.hasFocus()) renderFocusGUI();
 	}

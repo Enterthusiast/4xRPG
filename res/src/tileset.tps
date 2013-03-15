@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>json-array</string>
         <key>textureFileName</key>
-        <filename>../img/sprite-character.png</filename>
+        <filename>../img/tileset.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -99,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>character.java</filename>
+            <filename>tileset.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../sprite-character.json</filename>
+        <filename>../tileset.json</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -141,18 +141,23 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>char_left_move2.png</filename>
-            <filename>char_left_still.png</filename>
+            <filename>grass.png</filename>
+            <filename>rock.png</filename>
+            <filename>sand.png</filename>
+            <filename>water.png</filename>
+            <filename>dirt.png</filename>
             <filename>char_right_move1.png</filename>
             <filename>char_right_move2.png</filename>
             <filename>char_right_still.png</filename>
             <filename>char_up_move1.png</filename>
             <filename>char_up_move2.png</filename>
             <filename>char_up_still.png</filename>
-            <filename>char_down_move1.png</filename>
-            <filename>char_down_move2.png</filename>
             <filename>char_down_still.png</filename>
             <filename>char_left_move1.png</filename>
+            <filename>char_left_move2.png</filename>
+            <filename>char_left_still.png</filename>
+            <filename>char_down_move1.png</filename>
+            <filename>char_down_move2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

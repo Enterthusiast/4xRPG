@@ -81,7 +81,7 @@ SpriteSheetClass = Class.extend({
 
 	for(var i = 0; i < parsed.frames.length; i++) {
 		var sprite = parsed.frames[i];
-		console.log("Parsing sprite : " + sprite.filename + " ...")
+		// console.log("Parsing sprite : " + sprite.filename + " ...")
 
 		// Define the center of the sprite as an offset (hence the negative).
 		var cx = -sprite.frame.w * 0.5;
@@ -132,10 +132,10 @@ function __drawSpriteInternal(ctx, spt, sheet, posX, posY) {
 var characterSheet = new SpriteSheetClass();
 
 var xhr = new XMLHttpRequest();
-xhr.open("GET", 'res/sprite-character.json', true);
+xhr.open("GET", 'res/tileset.json', true);
 xhr.onload = function() {
 	characterSheet.parseAtlasDefinition(xhr.responseText);
-	characterSheet.load('res/img/sprite-character.png')
+	characterSheet.load('res/img/tileset.png')
 };
 
 xhr.send();
