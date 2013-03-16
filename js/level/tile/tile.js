@@ -10,10 +10,6 @@ Tile = Class.extend({
 			return;
 		}
 
-		if (id == -1) {
-
-		}
-
 		this.id = id;
 		this.name = name;
 

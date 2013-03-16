@@ -4,6 +4,9 @@ var TILESIZE = 32;
 var XTILES = 24;
 var YTILES = 16;
 
+var MAP_W = 256;
+var MAP_H = 256
+
 if (window.performance.now) {
     console.log("+++ Using high performance timer");
     getTimestamp = function() { return window.performance.now(); };
@@ -67,10 +70,10 @@ Game = Class.extend({
 
 		gInputHandler = new InputHandler(this.canvas);
 
-		this.level = new Level(256, 256, 'siryessir');
+		this.level = new Level(MAP_W, MAP_H, 'siryessir');
 		this.player = new Player(this.level, gInputHandler);
-		this.player.x = this.canvas.attr('width') / 2;
-		this.player.y = this.canvas.attr('height') / 2;
+		this.player.x = (MAP_W * TILESIZE) / 2;
+		this.player.y = (MAP_H * TILESIZE) / 2;
 	},
 
 	start: function() {
@@ -103,24 +106,35 @@ Game = Class.extend({
 	},
 
 	render: function() {
-		var screenW = this.canvas.attr('width');
-		var screenH = this.canvas.attr('height');
-		var xScroll = this.player.x - screenW / 2;
-		var yScroll = this.player.y - screenH / 2;
+		var halfW = this.screen.w / 2;
+		var halfH = this.screen.h / 2;
+		var xScroll = this.player.x - halfW;
+		var yScroll = this.player.y - halfH;
 
-		if (xScroll < XTILES) xScroll = XTILES;
-		if (yScroll < YTILES) yScroll = YTILES;
-		if (xScroll > this.level.w * XTILES - screenW - XTILES) xScroll = this.level.w * XTILES - screenW - XTILES;
-		if (yScroll > this.level.h * YTILES - screenH - YTILES) yScroll = this.level.h * YTILES - screenH - YTILES;
+		if (xScroll < halfW) xScroll = halfW;
+		if (yScroll < halfH) yScroll = halfH;
+		if (xScroll > (MAP_W * TILESIZE) - halfW) xScroll = (MAP_W * TILESIZE) - halfW;
+		if (yScroll > (MAP_H * TILESIZE) - halfH) yScroll = (MAP_H * TILESIZE) - halfH;
 
 		this.screen.clearBackground();
 
 		this.level.renderBackground(this.screen, xScroll, yScroll);
 		this.level.renderSprites(this.screen, xScroll, yScroll);
-		// console.log("xsc:"+xScroll + " / ysc:"+ yScroll);
+		// if (d_lastxScroll != xScroll || d_lastyScroll != yScroll || d_lastxPlayer != this.player.x || d_lastyPlayer != this.player.y) {
+		// 	d_lastxScroll = xScroll;
+		// 	d_lastyScroll = yScroll;
+		// 	d_lastxPlayer = this.player.x;
+		// 	d_lastyPlayer = this.player.y;
+		// 	console.log("xsc:"+xScroll + " / ysc:"+ yScroll+" /px:"+this.player.x+" /py:"+this.player.y);
+		// }
 		if (!this.hasFocus()) renderFocusGUI();
 	}
 });
+
+// var d_lastxScroll = 0;
+// var d_lastyScroll = 0;
+// var d_lastxPlayer = 0;
+// var d_lastyPlayer = 0;
 
 $(document).ready(function() {
 	gGame = new Game();

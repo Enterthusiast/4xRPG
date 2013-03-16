@@ -3,6 +3,8 @@ var DIR_UP = 1;
 var DIR_LEFT = 2;
 var DIR_RIGHT = 3;
 
+var MOVE_UNIT = 2;
+
 var sprites = [
 	['char_down_still.png','char_down_move1.png','char_down_move2.png', 'char_down_move1.png'],
 	['char_up_still.png','char_up_move1.png','char_up_move2.png', 'char_up_move1.png'],
@@ -40,8 +42,8 @@ Player = Class.extend({
 			if (ya != 0 && this.moveTo(0, ya)) stopped = false;
 
 			if (!stopped) {
-				var xt = this.x >> 4;
-				var yt = this.y >> 4;
+				var xt = this.x >> 5;
+				var yt = this.y >> 5;
 				this.level.getTile(xt, yt).steppedOn(this.level, xt, yt, this);
 			}
 
@@ -57,15 +59,15 @@ Player = Class.extend({
 			return;
 		}
 
-		// var xto0 = (this.x - this.xr) >> 4;
-		// var yto0 = (this.y - this.yr) >> 4;
-		// var xto1 = (this.x + this.xr) >> 4;
-		// var yto1 = (this.y + this.yr) >> 4;
+		// var xto0 = (this.x - this.xr) >> 5;
+		// var yto0 = (this.y - this.yr) >> 5;
+		// var xto1 = (this.x + this.xr) >> 5;
+		// var yto1 = (this.y + this.yr) >> 5;
 
-		// var xt0 = ((this.x + xa) - this.xr) >> 4;
-		// var yt0 = ((this.y + ya) - this.yr) >> 4;
-		// var xt1 = ((this.x + xa) + this.xr) >> 4;
-		// var yt0 = ((this.y + ya) + this.yr) >> 4;
+		// var xt0 = ((this.x + xa) - this.xr) >> 5;
+		// var yt0 = ((this.y + ya) - this.yr) >> 5;
+		// var xt1 = ((this.x + xa) + this.xr) >> 5;
+		// var yt0 = ((this.y + ya) + this.yr) >> 5;
 
 		// var blocked = false;
 		// for (var yt = yt0; yt < yt1; yt++) {
@@ -90,10 +92,10 @@ Player = Class.extend({
 	tick: function() {
 		var xa = 0;
 		var ya = 0;
-		if (this.input.up.down) ya--;
-		if (this.input.down.down) ya++;
-		if (this.input.left.down) xa--;
-		if (this.input.right.down) xa++;
+		if (this.input.up.down) ya -= MOVE_UNIT;
+		if (this.input.down.down) ya += MOVE_UNIT;
+		if (this.input.left.down) xa -= MOVE_UNIT;
+		if (this.input.right.down) xa += MOVE_UNIT;
 
 		this.move(xa, ya);
 	},
@@ -101,6 +103,6 @@ Player = Class.extend({
 	render: function(screen, xScroll, yScroll) {
 		var tile = ((this.walkDist >> 3) % sprites[this.dir].length);
 
-		screen.render(sprites[this.dir][tile], this.x, this.y);
+		screen.render(sprites[this.dir][tile], screen.w / 2, screen.h / 2);
 	}
 });

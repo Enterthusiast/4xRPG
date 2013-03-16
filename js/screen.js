@@ -4,17 +4,22 @@ Screen = Class.extend({
 	xTiles: 0,
 	yTiles: 0,
 	tileSize: 0,
+	xOffset: 0,
+	yOffset: 0,
+	w: 0,
+	h: 0,
 
 	init: function(ctx, xTiles, yTiles, tileSize) {
 		this.ctx = ctx;
 		this.xTiles = xTiles;
 		this.yTiles = yTiles;
-		this.tileSize = tileSize;		
+		this.tileSize = tileSize;
+		this.w = xTiles * tileSize;
+		this.h = yTiles * tileSize;
 	},
 
 	render: function(sprite, x, y) {
-		// drawSprite(this.ctx, sprite, x * this.tileSize, y * this.tileSize);
-		drawSprite(this.ctx, sprite, x, y);
+		drawSprite(this.ctx, sprite, x - this.xOffset, y - this.yOffset);
 	},
 
 	clearBackground: function() {
@@ -27,5 +32,10 @@ Screen = Class.extend({
 
 		// Restore the transform
 		this.ctx.restore();
+	},
+
+	setOffset: function(x, y) {
+		this.xOffset = x;
+		this.yOffset = y;
 	}
 });
