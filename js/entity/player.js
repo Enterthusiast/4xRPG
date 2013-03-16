@@ -36,13 +36,13 @@ Player = Class.extend({
 			if (ya > 0) this.dir = DIR_DOWN;
 
 			var stopped = true;
-			if (xa != 0 && moveTo(xa, 0)) stopped = false;
-			if (ya != 0 && moveTo(0, ya)) stopped = false;
+			if (xa != 0 && this.moveTo(xa, 0)) stopped = false;
+			if (ya != 0 && this.moveTo(0, ya)) stopped = false;
 
 			if (!stopped) {
 				var xt = this.x >> 4;
 				var yt = this.y >> 4;
-				level.getTile(xt, yt).steppedOn(level, xt, yt, this);
+				this.level.getTile(xt, yt).steppedOn(this.level, xt, yt, this);
 			}
 
 			return !stopped;
@@ -79,8 +79,10 @@ Player = Class.extend({
 		// 	}
 		// }
 
-		x += xa;
-		y += ya;
+		this.x += xa;
+		this.y += ya;
+
+		// console.log("x:"+this.x+" /y:"+this.y+" /xa:"+xa+" /ya:"+ya);
 
 		return true;
 	},
@@ -97,11 +99,8 @@ Player = Class.extend({
 	},
 
 	render: function(screen, xScroll, yScroll) {
-		// if (this.walkDist != 0)
-		// 	console.log("walkdist>>3: "+ ((this.walkDist >> 2) % playerSprites.length))
-
 		var tile = ((this.walkDist >> 3) % sprites[this.dir].length);
 
-		screen.render(sprites[this.dir][tile], this.x / 32 - 1, this.y / 32 - 1);
+		screen.render(sprites[this.dir][tile], this.x, this.y);
 	}
 });

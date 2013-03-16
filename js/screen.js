@@ -13,7 +13,8 @@ Screen = Class.extend({
 	},
 
 	render: function(sprite, x, y) {
-		drawSprite(this.ctx, sprite, x * this.tileSize + this.tileSize / 2, y * this.tileSize + this.tileSize / 2);
+		// drawSprite(this.ctx, sprite, x * this.tileSize, y * this.tileSize);
+		drawSprite(this.ctx, sprite, x, y);
 	},
 
 	clearBackground: function() {
@@ -22,7 +23,7 @@ Screen = Class.extend({
 
 		// Use the identity matrix while clearing the canvas
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.ctx.clearRect(0, 0, this.yTiles * this.tileSize, this.xTiles * this.tileSize);
+		this.ctx.clearRect(0, 0, this.xTiles * this.tileSize, this.yTiles * this.tileSize);
 
 		// Restore the transform
 		this.ctx.restore();

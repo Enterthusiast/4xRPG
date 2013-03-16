@@ -67,7 +67,7 @@ Game = Class.extend({
 
 		gInputHandler = new InputHandler(this.canvas);
 
-		this.level = new Level(16, 24, 'siryessir');
+		this.level = new Level(256, 256, 'siryessir');
 		this.player = new Player(this.level, gInputHandler);
 		this.player.x = this.canvas.attr('width') / 2;
 		this.player.y = this.canvas.attr('height') / 2;
@@ -117,7 +117,7 @@ Game = Class.extend({
 
 		this.level.renderBackground(this.screen, xScroll, yScroll);
 		this.level.renderSprites(this.screen, xScroll, yScroll);
-
+		// console.log("xsc:"+xScroll + " / ysc:"+ yScroll);
 		if (!this.hasFocus()) renderFocusGUI();
 	}
 });
