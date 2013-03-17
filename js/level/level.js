@@ -37,8 +37,8 @@ Level = Class.extend({
 		var y0 = yScroll >> 5;
 
 		screen.setOffset(xScroll, yScroll);
-		for (var y = y0; y < screen.yTiles + y0 + 2; y++) {
-			for (var x = x0; x < screen.xTiles + x0 + 2; x++) {
+		for (var y = y0; y < screen.yTiles + y0 + 1; y++) {
+			for (var x = x0; x < screen.xTiles + x0 + 1; x++) {
 				gTileLibrary[this.map[y][x]].render(screen, x * screen.tileSize, y * screen.tileSize);
 			}
 		}
@@ -64,6 +64,6 @@ Level = Class.extend({
 			
 		// 	console.log("tile @ xt="+xt+" /yt="+yt+" tile:"+this.map[yt][xt]);
 		// }
-		return gTileLibrary[this.map[xt][yt]];
+		return gTileLibrary[this.map[yt][xt]];
 	}
 });

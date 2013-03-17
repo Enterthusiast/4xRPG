@@ -158,6 +158,8 @@
             <filename>char_left_still.png</filename>
             <filename>char_down_move1.png</filename>
             <filename>char_down_move2.png</filename>
+            <filename>grass_d.png</filename>
+            <filename>rock_d.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -113,7 +113,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "rock.png",
+	"filename": "grass_d.png",
 	"frame": {"x":70,"y":138,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -121,7 +121,7 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "sand.png",
+	"filename": "rock.png",
 	"frame": {"x":2,"y":172,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -129,8 +129,24 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
-	"filename": "water.png",
+	"filename": "rock_d.png",
 	"frame": {"x":36,"y":172,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "sand.png",
+	"frame": {"x":70,"y":172,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "water.png",
+	"frame": {"x":2,"y":206,"w":32,"h":32},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
@@ -143,6 +159,6 @@
 	"format": "RGBA8888",
 	"size": {"w":128,"h":256},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2616cb12ba99a22cfad9c2c5ed7fdafe$"
+	"smartupdate": "$TexturePacker:SmartUpdate:3c892de5bfcf6aa117a10bbdb2c4d20e$"
 }
 }

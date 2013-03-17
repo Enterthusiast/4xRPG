@@ -24,12 +24,16 @@ Tile = Class.extend({
 	},
 
 	render: function(screen, x, y) {
-		// console.log("Rendering "+this.name+" tile at "+x+" / "+y);
+		// console.log("Rendering "+this.name+" ("+this.sprite+") tile at "+x+" / "+y);
 		screen.render(this.sprite, x, y);
 	},
 
 	steppedOn: function(level, xt, yt, entity) {
 
+	},
+
+	mayPass: function(level, xt, yt, entity) {
+		return true;
 	}
 });
 

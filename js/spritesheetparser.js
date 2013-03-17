@@ -31,19 +31,19 @@ SpriteSheetClass = Class.extend({
 	//-----------------------------------------
 	// Load the atlas at the path 'imgName' into memory.
 	load: function (imgName) {
-	// Store the URL of the spritesheet we want.
-	this.url = imgName;
-	
-	// Create a new image whose source is at 'imgName'.
-	var img = new Image();
-	img.src = imgName;
+		// Store the URL of the spritesheet we want.
+		this.url = imgName;
+		
+		// Create a new image whose source is at 'imgName'.
+		var img = new Image();
+		img.src = imgName + "?" + new Date().getTime();
 
-	// Store the Image object in the img parameter.
-	this.img = img;
+		// Store the Image object in the img parameter.
+		this.img = img;
 
-	// Store this SpriteSheetClass in our global
-	// dictionary gSpriteSheets defined above.
-	gSpriteSheets[imgName] = this;
+		// Store this SpriteSheetClass in our global
+		// dictionary gSpriteSheets defined above.
+		gSpriteSheets[imgName] = this;
 	},
 
 	//-----------------------------------------
@@ -81,7 +81,7 @@ SpriteSheetClass = Class.extend({
 
 	for(var i = 0; i < parsed.frames.length; i++) {
 		var sprite = parsed.frames[i];
-		// console.log("Parsing sprite : " + sprite.filename + " ...")
+		console.log("Parsing sprite : " + sprite.filename + " @ "+sprite.frame.x+","+sprite.frame.y+" ...")
 
 		// Define the center of the sprite as an offset (hence the negative).
 		var cx = -sprite.frame.w * 0.5;
@@ -114,6 +114,7 @@ function drawSprite(ctx, spriteName, posX, posY) {
 	for (var sheetName in gSpriteSheets) {
 		var sprite = gSpriteSheets[sheetName].getStats(spriteName);
 		if (sprite != null) {
+	// console.log("drawSprite "+sprite.id+ " for given "+spriteName+"@ "+sprite.x+","+sprite.y);
 			return __drawSpriteInternal(ctx, sprite, gSpriteSheets[sheetName], posX, posY);
 		}
 	}
@@ -126,16 +127,19 @@ function __drawSpriteInternal(ctx, spt, sheet, posX, posY) {
 	return;
 	}
 
-	ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + spt.cx, posY + spt.cy, spt.w, spt.h);
+	// ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + spt.cx, posY + spt.cy, spt.w, spt.h);
+	ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX, posY, spt.w, spt.h);
 }
 
 var characterSheet = new SpriteSheetClass();
+var gSpriteSheetReady = false;
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", 'res/tileset.json', true);
 xhr.onload = function() {
 	characterSheet.parseAtlasDefinition(xhr.responseText);
 	characterSheet.load('res/img/tileset.png')
+	gSpriteSheetReady = true;
 };
 
 xhr.send();

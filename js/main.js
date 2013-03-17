@@ -29,6 +29,10 @@ var unprocessed = 0;
 var gGame = null;
 
 var GameRunner = function() {
+	if (gSpriteSheetReady == false) {
+		return;
+	}
+
 	var now = getTimestamp();
 	unprocessed += (now - lastTime) / msPerTick;
 	lastTime = now;
@@ -78,7 +82,7 @@ Game = Class.extend({
 
 	start: function() {
 		this.running = true;
-
+		console.log("Ready to go ...");
 		window.setInterval(GameRunner, 2);
 	},
 
@@ -128,6 +132,14 @@ Game = Class.extend({
 		// 	console.log("xsc:"+xScroll + " / ysc:"+ yScroll+" /px:"+this.player.x+" /py:"+this.player.y);
 		// }
 		if (!this.hasFocus()) renderFocusGUI();
+
+		// drawSprite(this.ctx, "water.png", 0, 0);
+		// drawSprite(this.ctx, "grass.png", 0, 32);
+		// drawSprite(this.ctx, "rock.png", 0, 64);
+		// drawSprite(this.ctx, "rock_d.png", 0, 96);
+		// drawSprite(this.ctx, "dirt.png", 0, 128);
+		// drawSprite(this.ctx, "sand.png", 0, 164);
+		// drawSprite(this.ctx, "grass_d.png", 0, 196);
 	}
 });
 

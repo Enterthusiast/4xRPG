@@ -1,4 +1,4 @@
 
 GrassTile = Tile.extend({
-	sprite: 'grass.png'
+	sprite: 'grass_d.png'
 });
