@@ -1,6 +1,6 @@
 
 RockTile = Tile.extend({
-	sprite: 'rock_d.png',
+	sprite: 'rock.png',
 
 	mayPass: function(level, xt, yt, entity) {
 		return false;

@@ -127,8 +127,8 @@ function __drawSpriteInternal(ctx, spt, sheet, posX, posY) {
 	return;
 	}
 
-	// ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + spt.cx, posY + spt.cy, spt.w, spt.h);
-	ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX, posY, spt.w, spt.h);
+	ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX + spt.cx, posY + spt.cy, spt.w, spt.h);
+	// ctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX, posY, spt.w, spt.h);
 }
 
 var characterSheet = new SpriteSheetClass();

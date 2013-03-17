@@ -17,7 +17,7 @@ Player = Class.extend({
 	x: 0,
 	y: 0,
 	xr: 16,
-	yr: 16,
+	yr: 15,
 	walkDist: 0,
 	dir: DIR_DOWN,
 	level: null,
@@ -59,15 +59,15 @@ Player = Class.extend({
 			return;
 		}
 
-		var xto0 = (this.x - this.xr) >> 5;
-		var yto0 = (this.y - this.yr) >> 5;
-		var xto1 = (this.x + this.xr) >> 5;
-		var yto1 = (this.y + this.yr) >> 5;
+		var xto0 = (this.x - this.xr + 16) >> 5;
+		var yto0 = (this.y - this.yr + 16) >> 5;
+		var xto1 = (this.x + this.xr + 16) >> 5;
+		var yto1 = (this.y + this.yr + 16) >> 5;
 
-		var xt0 = ((this.x + xa) - this.xr) >> 5;
-		var yt0 = ((this.y + ya) - this.yr) >> 5;
-		var xt1 = ((this.x + xa) + this.xr) >> 5;
-		var yt1 = ((this.y + ya) + this.yr) >> 5;
+		var xt0 = ((this.x + xa) - this.xr + 16) >> 5;
+		var yt0 = ((this.y + ya) - this.yr + 16) >> 5;
+		var xt1 = ((this.x + xa) + this.xr + 16) >> 5;
+		var yt1 = ((this.y + ya) + this.yr + 16) >> 5;
 
 		var blocked = false;
 		for (var yt = yt0; yt <= yt1; yt++) {
@@ -75,7 +75,7 @@ Player = Class.extend({
 				if (xt >= xto0 && xt <= xto1 && yt >= yto0 && yt <= yto1) continue;
 				// this.level.getTile(xt, yt).bumpedInto(this.level, xt, yt, this);
 				if (!this.level.getTile(xt, yt).mayPass(this.level, xt, yt, this)) {
-					console.log(this.level.getTile(xt, yt).name+" @ "+xt+","+yt+" /p @ "+(this.x >> 5)+","+(this.y >> 5));
+					// console.log(this.level.getTile(xt, yt).name+" @ "+xt+","+yt+" /p @ "+(this.x >> 5)+","+(this.y >> 5));
 					blocked = true;
 					return false;
 				}
