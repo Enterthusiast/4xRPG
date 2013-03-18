@@ -38,7 +38,7 @@ InputHandler = Class.extend({
 	right: new Key(),
 	attack: new Key(),
 	menu: new Key(),
-	sneak: new Key(), 
+	run: new Key(),
 
 	bindings: {},
 	mouse: {
@@ -47,13 +47,13 @@ InputHandler = Class.extend({
 	},
 
 	init: function(canvas) {
-		this.bind(90, 'move-up');
-		this.bind(81, 'move-left');
-		this.bind(83, 'move-down');
-		this.bind(68, 'move-right');
-		this.bind(17, 'attack');
-		this.bind(27, 'menu');
-		this.bind(16, 'sneak');
+		this.bind(90,  'move-up');
+		this.bind(81,  'move-left');
+		this.bind(83,  'move-down');
+		this.bind(68,  'move-right');
+		this.bind(17,  'attack');
+		this.bind(27,  'menu');
+		this.bind(16,  'run');
 
 		canvas.mousemove(this.onMouseMove);
 		canvas.keydown(this.onKeyDown);
@@ -88,7 +88,7 @@ InputHandler = Class.extend({
 		if (key == 'move-right') gInputHandler.right.toggle(pressed);
 		if (key == 'attack') gInputHandler.attack.toggle(pressed);
 		if (key == 'menu') gInputHandler.menu.toggle(pressed);
-		if (key == 'sneak') gInputHandler.sneak.toggle(pressed);
+		if (key == 'run') gInputHandler.run.toggle(pressed);
 	},
 
 	tick: function() {

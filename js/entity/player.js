@@ -104,9 +104,9 @@ Player = Class.extend({
 		var xa = 0;
 		var ya = 0;
 
-		var moveUnit = SPEED_RUN;
+		var moveUnit = SPEED_WALK;
 
-		if (this.input.sneak.down) moveUnit = SPEED_WALK;
+		if (this.input.run.down) moveUnit = SPEED_RUN;
 		if (this.input.up.down) ya -= moveUnit;
 		if (this.input.down.down) ya += moveUnit;
 		if (this.input.left.down) xa -= moveUnit;
