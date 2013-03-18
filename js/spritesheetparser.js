@@ -81,7 +81,7 @@ SpriteSheetClass = Class.extend({
 
 	for(var i = 0; i < parsed.frames.length; i++) {
 		var sprite = parsed.frames[i];
-		console.log("Parsing sprite : " + sprite.filename + " @ "+sprite.frame.x+","+sprite.frame.y+" ...")
+		// console.log("Parsing sprite : " + sprite.filename + " @ "+sprite.frame.x+","+sprite.frame.y+" ...")
 
 		// Define the center of the sprite as an offset (hence the negative).
 		var cx = -sprite.frame.w * 0.5;
