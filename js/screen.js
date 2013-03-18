@@ -39,10 +39,33 @@ Screen = Class.extend({
 		this.yOffset = y;
 	},
 
-	renderDebugText: function(text) {
+	renderDebugText: function(text, position) {
 		this.ctx.font = 'bold 12px sans-serif';
-		this.ctx.textBaseline = 'bottom';
-		this.ctx.textAlign = 'right';
-		this.ctx.fillText(text, this.xTiles * this.tileSize, this.yTiles * this.tileSize);
+		var textX = 0;
+		var textY = 0;
+
+		if (position == 'bottom-right') {
+			this.ctx.textBaseline = 'bottom';
+			this.ctx.textAlign = 'right';
+			textX = this.xTiles * this.tileSize;
+			textY = this.yTiles * this.tileSize;
+		} else if (position == 'top-right') {
+			this.ctx.textBaseline = 'top';
+			this.ctx.textAlign = 'right';
+			textX = this.xTiles * this.tileSize;
+			textY = 0;
+		} else if (position == 'bottom-left') {
+			this.ctx.textBaseline = 'bottom';
+			this.ctx.textAlign = 'left';
+			textX = 0;
+			textY = this.yTiles * this.tileSize;
+		} else if (position == 'top-left') {
+			this.ctx.textBaseline = 'top';
+			this.ctx.textAlign = 'left';
+			textX = 0;
+			textY = 0;
+		}
+
+		this.ctx.fillText(text, textX, textY);
 	}
 });
