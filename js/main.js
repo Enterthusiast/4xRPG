@@ -27,6 +27,7 @@ var frames = 0;
 var ticks = 0;
 var unprocessed = 0;
 var gGame = null;
+var fps = 0;
 
 var GameRunner = function() {
 	if (gSpriteSheetReady == false) {
@@ -48,10 +49,11 @@ var GameRunner = function() {
 
 	if (getTimestamp() - fpsCounter > 1000) {
 		fpsCounter += 1000;
-		// console.log(ticks + " ticks, " + frames + " fps");
+		fps = frames;
 		frames = 0;
 		ticks = 0
 	}
+	gGame.screen.renderDebugText(fps + " fps", 'top-left');
 }
 
 Game = Class.extend({
