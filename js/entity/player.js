@@ -16,7 +16,7 @@ Player = Class.extend({
 
 	x: 0,
 	y: 0,
-	xr: 16,
+	xr: 11,
 	yr: 15,
 	walkDist: 0,
 	dir: DIR_DOWN,
