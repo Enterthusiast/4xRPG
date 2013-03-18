@@ -3,7 +3,8 @@ var DIR_UP = 1;
 var DIR_LEFT = 2;
 var DIR_RIGHT = 3;
 
-var MOVE_UNIT = 2;
+var SPEED_WALK = 2;
+var SPEED_RUN = 4;
 
 var sprites = [
 	['char_down_still.png','char_down_move1.png','char_down_move2.png', 'char_down_move1.png'],
@@ -21,6 +22,7 @@ Player = Class.extend({
 	walkDist: 0,
 	dir: DIR_DOWN,
 	level: null,
+	running: true,
 
 	init: function(level, input) {
 		this.level = level;
@@ -30,6 +32,14 @@ Player = Class.extend({
 	},
 
 	move: function(xa, ya) {
+		// While moving in both direction, reduce the speed vector.
+		if (xa != 0 && ya != 0) {
+			if (xa < 0) xa++;
+			if (xa > 0) xa--;
+			if (ya < 0) ya++;
+			if (ya > 0) ya--;
+		}
+
 		if (xa != 0 || ya != 0) {
 			this.walkDist++;
 			if (xa < 0) this.dir = DIR_LEFT;
@@ -93,10 +103,14 @@ Player = Class.extend({
 	tick: function() {
 		var xa = 0;
 		var ya = 0;
-		if (this.input.up.down) ya -= MOVE_UNIT;
-		if (this.input.down.down) ya += MOVE_UNIT;
-		if (this.input.left.down) xa -= MOVE_UNIT;
-		if (this.input.right.down) xa += MOVE_UNIT;
+
+		var moveUnit = SPEED_RUN;
+
+		if (this.input.sneak.down) moveUnit = SPEED_WALK;
+		if (this.input.up.down) ya -= moveUnit;
+		if (this.input.down.down) ya += moveUnit;
+		if (this.input.left.down) xa -= moveUnit;
+		if (this.input.right.down) xa += moveUnit;
 
 		this.move(xa, ya);
 	},
