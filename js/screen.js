@@ -37,5 +37,12 @@ Screen = Class.extend({
 	setOffset: function(x, y) {
 		this.xOffset = x;
 		this.yOffset = y;
+	},
+
+	renderDebugText: function(text) {
+		this.ctx.font = 'bold 12px sans-serif';
+		this.ctx.textBaseline = 'bottom';
+		this.ctx.textAlign = 'right';
+		this.ctx.fillText(text, this.xTiles * this.tileSize, this.yTiles * this.tileSize);
 	}
 });
