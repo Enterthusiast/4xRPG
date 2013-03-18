@@ -22,7 +22,7 @@ Player = Class.extend({
 	walkDist: 0,
 	dir: DIR_DOWN,
 	level: null,
-	running: true,
+	running: false,
 
 	init: function(level, input) {
 		this.level = level;
