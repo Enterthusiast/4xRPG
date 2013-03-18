@@ -5,7 +5,7 @@ var TILEDMapClass = Class.extend({
 
 	// tilesets stores each individual tileset from the map.json's 'tilesets' Array.
 	// The structure of each entry of this Array is explained below in the parseAtlasDefinition method.
-	tilesets[],
+	tilesets: [],
 	
 	// Boolean flag we set once our map atlas has finished loading.
 	fullyLoaded: false,
