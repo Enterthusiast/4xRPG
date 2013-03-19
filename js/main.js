@@ -77,9 +77,7 @@ Game = Class.extend({
 		gInputHandler = new InputHandler(this.canvas);
 
 		this.level = new Level(MAP_W, MAP_H, 'siryessir');
-		this.player = new Player(this.level, gInputHandler);
-		this.player.x = (MAP_W * TILESIZE) / 2;
-		this.player.y = (MAP_H * TILESIZE) / 2;
+		this.player = new Player(this.level, gInputHandler, (MAP_W * TILESIZE) / 2, (MAP_H * TILESIZE) / 2);
 	},
 
 	start: function() {

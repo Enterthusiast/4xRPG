@@ -14,7 +14,8 @@ var sprites = [
 ];
 
 Player = Class.extend({
-
+	spawnX: 0,
+	spawnY: 0,
 	x: 0,
 	y: 0,
 	xr: 10,
@@ -24,11 +25,31 @@ Player = Class.extend({
 	level: null,
 	running: false,
 
-	init: function(level, input) {
+	init: function(level, input, x, y) {
 		this.level = level;
 		this.input = input;
 
+		this.spawn(x, y);
+
 		level.addEntity(this);
+	},
+
+	spawn: function(x, y) {
+		var xt = x >> 5;
+		var yt = y >> 5;
+
+		while (!this.level.getTile(xt, yt).mayPass(this.level, xt, yt, this)) {
+			var dir = Math.floor(Math.random * 4);
+			if (dir == 0) xt++;
+			if (dir == 1) xt--;
+			if (dir == 2) yt++;
+			if (dir == 3) yt--;
+		}
+
+		this.y = y;
+		this.spawnY = y;
+		this.x = x;
+		this.spawnX = x;
 	},
 
 	move: function(xa, ya) {
@@ -119,5 +140,7 @@ Player = Class.extend({
 		var tile = ((this.walkDist >> 3) % sprites[this.dir].length);
 
 		screen.render(sprites[this.dir][tile], screen.w / 2, screen.h / 2);
+
+		// screen.renderDebugText("player @ "+this.x+" ("+(this.x>>5)+"),"+this.y+" ("+(this.y>>5)+")", 'top-right');
 	}
 });
