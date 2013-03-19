@@ -144,22 +144,28 @@ LevelGen = Class.extend({
 			for (var x = 0; x < this.w; x++) {
 				var tile = Math.floor(this.map[y][x]);
 
+				var mapTile = {
+					id: 0
+				}
+
 				if (tile <= waterline) {
-					this.map[y][x] = gTileLibrary['water'].id;
+					mapTile.id = gTileLibrary['water'].id;
 					waterCount++;
 				} else if (tile > waterline && tile <= waterline + 15) {
-					this.map[y][x] = gTileLibrary['sand'].id;
+					mapTile.id = gTileLibrary['sand'].id;
 					sandCount++;
 				} else if (tile > waterline + 15 && tile <= waterline + 40) {
-					this.map[y][x] = gTileLibrary['grass'].id;
+					mapTile.id = gTileLibrary['grass'].id;
 					grassCount++;
 				} else if (tile > waterline + 40 && tile <= waterline + 60) {
-					this.map[y][x] = gTileLibrary['tree'].id;
+					mapTile.id = gTileLibrary['tree'].id;
 					grassCount++;
 				} else {
-					this.map[y][x] = gTileLibrary['rock'].id;
+					mapTile.id = gTileLibrary['rock'].id;
 					rockCount++;
 				}
+
+				this.map[y][x] = mapTile;
 			}
 		}
 				

@@ -43,7 +43,7 @@ Level = Class.extend({
 				if (y < 0 || x < 0 || y >= this.h || x >= this.w) {
 					gTileLibrary['water'].render(screen, x * screen.tileSize, y * screen.tileSize);
 				} else {
-					gTileLibrary[this.map[y][x]].render(screen, x * screen.tileSize, y * screen.tileSize);
+					gTileLibrary[this.map[y][x].id].render(screen, x * screen.tileSize, y * screen.tileSize);
 				}
 			}
 		}
@@ -57,27 +57,27 @@ Level = Class.extend({
 			for (var x = 0; x < this.w; x++) {
 				var index = (x + y * this.minimap.width) * 4;
 
-				if (gTileLibrary[this.map[y][x]].name == 'grass') {
+				if (gTileLibrary[this.map[y][x].id].name == 'grass') {
 					color.r = 100;
 					color.g = 164;
 					color.b = 44;
 				}
-				if (gTileLibrary[this.map[y][x]].name == 'water') {
+				if (gTileLibrary[this.map[y][x].id].name == 'water') {
 					color.r = 131;
 					color.g = 198;
 					color.b = 255;
 				}
-				if (gTileLibrary[this.map[y][x]].name == 'sand') {
+				if (gTileLibrary[this.map[y][x].id].name == 'sand') {
 					color.r = 217;
 					color.g = 183;
 					color.b = 92;
 				}
-				if (gTileLibrary[this.map[y][x]].name == 'rock') {
+				if (gTileLibrary[this.map[y][x].id].name == 'rock') {
 					color.r = 129;
 					color.g = 139;
 					color.b = 139;
 				}
-				if (gTileLibrary[this.map[y][x]].name == 'tree') {
+				if (gTileLibrary[this.map[y][x].id].name == 'tree') {
 					color.r = 11;
 					color.g = 92;
 					color.b = 47;
@@ -118,6 +118,6 @@ Level = Class.extend({
 			
 		// 	console.log("tile @ xt="+xt+" /yt="+yt+" tile:"+this.map[yt][xt]);
 		// }
-		return gTileLibrary[this.map[yt][xt]];
+		return gTileLibrary[this.map[yt][xt].id];
 	}
 });
