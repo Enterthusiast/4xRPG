@@ -9,6 +9,7 @@ Level = Class.extend({
 	h: 0,
 	map: null,
 	seed: null,
+	minimap: null,
 
 	init: function(w, h, seed) {
 		this.w = w;
@@ -43,6 +44,50 @@ Level = Class.extend({
 			}
 		}
 		screen.setOffset(0, 0);
+	},
+
+	generateMinimap: function(screen) {
+		this.minimap = screen.ctx.createImageData(this.w, this.h);
+		var color = { r: 0, g: 0, b: 0, a: 255 };
+		for (var y = 0; y < this.h; y++) {
+			for (var x = 0; x < this.w; x++) {
+				var index = (x + y * this.minimap.width) * 4;
+
+				if (gTileLibrary[this.map[y][x]].name == 'grass') {
+					color.r = 100;
+					color.g = 164;
+					color.b = 44;
+				}
+				if (gTileLibrary[this.map[y][x]].name == 'water') {
+					color.r = 131;
+					color.g = 198;
+					color.b = 255;
+				}
+				if (gTileLibrary[this.map[y][x]].name == 'sand') {
+					color.r = 217;
+					color.g = 183;
+					color.b = 92;
+				}
+				if (gTileLibrary[this.map[y][x]].name == 'rock') {
+					color.r = 129;
+					color.g = 139;
+					color.b = 139;
+				}
+
+				this.minimap.data[index + 0] = color.r;
+				this.minimap.data[index + 1] = color.g;
+				this.minimap.data[index + 2] = color.b;
+				this.minimap.data[index + 3] = color.a;
+			}
+		}
+	},
+
+	renderMinimap: function(screen, xScroll, yScroll) {
+		if (this.minimap == null) {
+			this.generateMinimap(screen);
+		}
+
+		screen.ctx.putImageData(this.minimap, 0, 0);
 	},
 
 	renderSprites: function(screen, xScroll, yScroll) {
