@@ -139,7 +139,9 @@ LevelGen = Class.extend({
 		var grassCount = 0;
 		var sandCount = 0;
 		var waterCount = 0;
+		var treeCount = 0;
 
+		// Generate ground.
 		for (var y = 0; y < this.h; y++) {
 			for (var x = 0; x < this.w; x++) {
 				var tile = Math.floor(this.map[y][x]);
@@ -154,22 +156,28 @@ LevelGen = Class.extend({
 				} else if (tile > waterline && tile <= waterline + 15) {
 					mapTile.id = gTileLibrary['sand'].id;
 					sandCount++;
-				} else if (tile > waterline + 15 && tile <= waterline + 40) {
+				} else if (tile > waterline + 15 && tile <= waterline + 60) {
 					mapTile.id = gTileLibrary['grass'].id;
-					grassCount++;
-				} else if (tile > waterline + 40 && tile <= waterline + 60) {
-					mapTile.id = gTileLibrary['tree'].id;
 					grassCount++;
 				} else {
 					mapTile.id = gTileLibrary['rock'].id;
 					rockCount++;
 				}
 
+				// Add trees.
+				if (mapTile.id == gTileLibrary['grass'].id) {
+					if (Math.floor(Math.random() * 10) == 0) {
+						mapTile.id = gTileLibrary['tree'].id;
+						grassCount--;
+						treeCount++;
+					}
+				}
+
 				this.map[y][x] = mapTile;
 			}
 		}
-				
-		console.log("map total :\n\t"+rockCount+" rock / "+grassCount+" grass / "+sandCount+" sand / "+waterCount+" water");
+
+		console.log("map total :\n\t"+rockCount+" rock / "+grassCount+" grass / "+sandCount+" sand / "+waterCount+" water / "+treeCount+" tree");
 
 		return this.map;
 	},
