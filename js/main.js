@@ -115,11 +115,6 @@ Game = Class.extend({
 		var xScroll = this.player.x - halfW;
 		var yScroll = this.player.y - halfH;
 
-		if (xScroll < halfW) xScroll = halfW;
-		if (yScroll < halfH) yScroll = halfH;
-		if (xScroll > (MAP_W * TILESIZE) - halfW) xScroll = (MAP_W * TILESIZE) - halfW;
-		if (yScroll > (MAP_H * TILESIZE) - halfH) yScroll = (MAP_H * TILESIZE) - halfH;
-
 		this.screen.clearBackground();
 
 		this.level.renderBackground(this.screen, xScroll, yScroll);

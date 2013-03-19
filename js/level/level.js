@@ -40,7 +40,11 @@ Level = Class.extend({
 		screen.setOffset(xScroll, yScroll);
 		for (var y = y0; y < screen.yTiles + y0 + 2; y++) {
 			for (var x = x0; x < screen.xTiles + x0 + 2; x++) {
-				gTileLibrary[this.map[y][x]].render(screen, x * screen.tileSize, y * screen.tileSize);
+				if (y < 0 || x < 0 || y >= this.h || x >= this.w) {
+					gTileLibrary['water'].render(screen, x * screen.tileSize, y * screen.tileSize);
+				} else {
+					gTileLibrary[this.map[y][x]].render(screen, x * screen.tileSize, y * screen.tileSize);
+				}
 			}
 		}
 		screen.setOffset(0, 0);
