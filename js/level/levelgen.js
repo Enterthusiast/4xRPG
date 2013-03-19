@@ -9,10 +9,6 @@ LevelGen = Class.extend({
 
 	// Simple smoothing method, gets rid of unwanted blurps
 	smooth: function() {
-var rockCount = 0;
-var grassCount = 0;
-var sandCount = 0;
-var waterCount = 0;
 		for (var y = 0; y < this.h; y++) {
 			for (var x = 0; x < this.w; x++) {
 				var average = 0;
@@ -39,15 +35,15 @@ var waterCount = 0;
 					average += this.map[y - 1][x - 1];
 					times++;
 				}
-				if (x + 1 < this.w && y - 1 >= 0) {
+				if (x + 1 < this.w - 1 && y - 1 >= 0) {
 					average += this.map[y - 1][x + 1];
 					times++;
 				}
-				if (x - 1 >= 0 && y + 1 < this.h) {
+				if (x - 1 >= 0 && y + 1 < this.h - 1) {
 					average += this.map[y + 1][x - 1];
 					times++;
 				}
-				if (x + 1 < this.w && y + 1 < this.h) {
+				if (x + 1 < this.w  - 1&& y + 1 < this.h - 1) {
 					average += this.map[y + 1][x + 1];
 					times++
 				}
@@ -57,23 +53,9 @@ var waterCount = 0;
 
 				average /= times;
 
-				if (average >= 60) {
-					this.map[y][x] = gTileLibrary['rock'].id;
-					rockCount++;
-				} else if (average >= 30) {
-					this.map[y][x] = gTileLibrary['grass'].id;
-					grassCount++;	
-				} else if (average >= 10) {
-					this.map[y][x] = gTileLibrary['sand'].id;
-					sandCount++;	
-				} else {
-					this.map[y][x] = gTileLibrary['water'].id;
-					waterCount++;						
-				}
+				this.map[y][x] = average;
 			}
 		}
-				
-				console.log("map total :\n\t"+rockCount+" rock / "+grassCount+" grass / "+sandCount+" sand / "+waterCount+" water");
 	},
 
 	createIsland: function(w, h) {
@@ -151,8 +133,49 @@ var waterCount = 0;
 		}
 
 		this.smooth();
+		// this.smooth();
+		var waterline = this.getWaterLine();
+		var rockCount = 0;
+		var grassCount = 0;
+		var sandCount = 0;
+		var waterCount = 0;
+
+		for (var y = 0; y < this.h; y++) {
+			for (var x = 0; x < this.w; x++) {
+				var tile = Math.floor(this.map[y][x]);
+
+				if (tile <= waterline) {
+					this.map[y][x] = gTileLibrary['water'].id;
+					waterCount++;
+				} else if (tile > waterline && tile <= waterline + 15) {
+					this.map[y][x] = gTileLibrary['sand'].id;
+					sandCount++;
+				} else if (tile > waterline + 10 && tile <= waterline + 50) {
+					this.map[y][x] = gTileLibrary['grass'].id;
+					grassCount++;
+				} else {
+					this.map[y][x] = gTileLibrary['rock'].id;
+					rockCount++;
+				}
+			}
+		}
+				
+		console.log("map total :\n\t"+rockCount+" rock / "+grassCount+" grass / "+sandCount+" sand / "+waterCount+" water");
 
 		return this.map;
+	},
+
+	getWaterLine: function() {
+		var values = [];
+
+		for (var y = 0; y < this.h; y++) {
+			for (var x = 0; x < this.w; x++) {
+				values.push(this.map[y][x]);
+			}
+		}
+		values.sort();
+		// console.log(values.length + " values / waterline @ " + ((values.length - 1) * 0.60) + " / rounded @ " + Math.floor((values.length - 1) * 0.60));
+		return values[Math.floor((values.length - 1) * 0.40)];
 	},
 
 	createSurfaceMap: function(w, h) {
