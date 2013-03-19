@@ -1,7 +1,7 @@
 
 PerlinNoiseGen = Class.extend({
 
-    noise: new Array(),
+    noise: [],
     noiseWidth: 0,
     noiseHeight: 0,
 
@@ -16,9 +16,9 @@ PerlinNoiseGen = Class.extend({
         for (var y = 0; y < this.noiseHeight; y++) {
             var noiseRow = new Array();
             for (var x = 0; x < this.noiseWidth; x++) {
-                noiseRow.push(Math.random());
+                noiseRow[x] = Math.random();
             }
-            this.noise.push(noiseRow);
+            this.noise[y] = noiseRow;
         }
 
         var result = [];
