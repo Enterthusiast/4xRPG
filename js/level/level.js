@@ -73,7 +73,12 @@ Level = Class.extend({
 					color.g = 139;
 					color.b = 139;
 				}
-
+				if (gTileLibrary[this.map[y][x]].name == 'tree') {
+					color.r = 11;
+					color.g = 92;
+					color.b = 47;
+				}
+				
 				this.minimap.data[index + 0] = color.r;
 				this.minimap.data[index + 1] = color.g;
 				this.minimap.data[index + 2] = color.b;
