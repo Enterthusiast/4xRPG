@@ -4,8 +4,8 @@ var TILESIZE = 32;
 var XTILES = 24;
 var YTILES = 16;
 
-var MAP_W = 256;
-var MAP_H = 256
+var MAP_W = 200;
+var MAP_H = 200;
 
 if (window.performance.now) {
     console.log("+++ Using high performance timer");
@@ -126,22 +126,10 @@ Game = Class.extend({
 
 		this.level.renderBackground(this.screen, xScroll, yScroll);
 		this.level.renderSprites(this.screen, xScroll, yScroll);
-		// if (d_lastxScroll != xScroll || d_lastyScroll != yScroll || d_lastxPlayer != this.player.x || d_lastyPlayer != this.player.y) {
-		// 	d_lastxScroll = xScroll;
-		// 	d_lastyScroll = yScroll;
-		// 	d_lastxPlayer = this.player.x;
-		// 	d_lastyPlayer = this.player.y;
-		// 	console.log("xsc:"+xScroll + " / ysc:"+ yScroll+" /px:"+this.player.x+" /py:"+this.player.y);
-		// }
-		if (!this.hasFocus()) renderFocusGUI();
 
-		// drawSprite(this.ctx, "water.png", 0, 0);
-		// drawSprite(this.ctx, "grass.png", 0, 32);
-		// drawSprite(this.ctx, "rock.png", 0, 64);
-		// drawSprite(this.ctx, "rock_d.png", 0, 96);
-		// drawSprite(this.ctx, "dirt.png", 0, 128);
-		// drawSprite(this.ctx, "sand.png", 0, 164);
-		// drawSprite(this.ctx, "grass_d.png", 0, 196);
+		// this.level.renderMinimap(this.screen, xScroll, yScroll);
+
+		if (!this.hasFocus()) renderFocusGUI();
 	}
 });
 
