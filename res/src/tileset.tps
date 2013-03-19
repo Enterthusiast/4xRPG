@@ -160,6 +160,7 @@
             <filename>char_down_move2.png</filename>
             <filename>grass_d.png</filename>
             <filename>rock_d.png</filename>
+            <filename>tree.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
