@@ -4,12 +4,14 @@ Tile = Class.extend({
 	id: -1,
 	tiles: [],
 	name: '',
+	layer: 0,
 
-	init: function(id, name) {
+	init: function(id, name, layer) {
 		if (id == null) {
 			return;
 		}
 
+		this.layer = layer;
 		this.id = id;
 		this.name = name;
 
