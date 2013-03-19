@@ -150,8 +150,11 @@ LevelGen = Class.extend({
 				} else if (tile > waterline && tile <= waterline + 15) {
 					this.map[y][x] = gTileLibrary['sand'].id;
 					sandCount++;
-				} else if (tile > waterline + 10 && tile <= waterline + 50) {
+				} else if (tile > waterline + 15 && tile <= waterline + 40) {
 					this.map[y][x] = gTileLibrary['grass'].id;
+					grassCount++;
+				} else if (tile > waterline + 40 && tile <= waterline + 60) {
+					this.map[y][x] = gTileLibrary['tree'].id;
 					grassCount++;
 				} else {
 					this.map[y][x] = gTileLibrary['rock'].id;
