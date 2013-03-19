@@ -82,7 +82,12 @@ Level = Class.extend({
 					color.g = 92;
 					color.b = 47;
 				}
-				
+				if (gTileLibrary[this.map[y][x].id].name == 'cactus') {
+					color.r = 129;
+					color.g = 161;
+					color.b = 0;
+				}
+
 				this.minimap.data[index + 0] = color.r;
 				this.minimap.data[index + 1] = color.g;
 				this.minimap.data[index + 2] = color.b;
@@ -115,7 +120,7 @@ Level = Class.extend({
 		// if (d_lastX != xt || d_lastY != yt) {
 		// 	d_lastX = xt;
 		// 	d_lastY = yt;
-			
+
 		// 	console.log("tile @ xt="+xt+" /yt="+yt+" tile:"+this.map[yt][xt]);
 		// }
 		return gTileLibrary[this.map[yt][xt].id];

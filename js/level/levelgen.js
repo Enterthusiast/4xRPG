@@ -173,6 +173,15 @@ LevelGen = Class.extend({
 					}
 				}
 
+				// Add cacti.
+				if (mapTile.id == gTileLibrary['sand'].id) {
+					if (Math.floor(Math.random() * 16) == 0) {
+						mapTile.id = gTileLibrary['cactus'].id;
+						grassCount--;
+						treeCount++;
+					}
+				}
+
 				this.map[y][x] = mapTile;
 			}
 		}

@@ -161,6 +161,7 @@
             <filename>grass_d.png</filename>
             <filename>rock_d.png</filename>
             <filename>tree.png</filename>
+            <filename>cactus.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
