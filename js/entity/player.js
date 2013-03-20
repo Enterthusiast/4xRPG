@@ -46,10 +46,10 @@ Player = Class.extend({
 			if (dir == 3) yt--;
 		}
 
-		this.y = y;
-		this.spawnY = y;
-		this.x = x;
-		this.spawnX = x;
+		this.y = yt << 5;
+		this.spawnY = this.y;
+		this.x = xt << 5;
+		this.spawnX = this.x;
 	},
 
 	move: function(xa, ya) {
@@ -104,7 +104,7 @@ Player = Class.extend({
 		for (var yt = yt0; yt <= yt1; yt++) {
 			for (var xt = xt0; xt <= xt1; xt++) {
 				if (xt >= xto0 && xt <= xto1 && yt >= yto0 && yt <= yto1) continue;
-				// this.level.getTile(xt, yt).bumpedInto(this.level, xt, yt, this);
+				this.level.bumpedInto(this.level, xt, yt, this);
 				if (!this.level.getTile(xt, yt).mayPass(this.level, xt, yt, this)) {
 					// console.log(this.level.getTile(xt, yt).name+" @ "+xt+","+yt+" /p @ "+(this.x >> 5)+","+(this.y >> 5));
 					blocked = true;

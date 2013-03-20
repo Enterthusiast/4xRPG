@@ -8,6 +8,7 @@ Level = Class.extend({
 	w: 0,
 	h: 0,
 	map: null,
+	towns: null,
 	seed: null,
 	minimap: null,
 
@@ -20,7 +21,9 @@ Level = Class.extend({
 
 		console.log("Creating level with seed: " + seed);
 
-		this.map = new LevelGen().createSurfaceMap(w, h);
+		var levelGen = new LevelGen();
+		this.map = levelGen.createSurfaceMap(w, h);
+		this.towns = levelGen.getTowns();
 
 		// for (var y = 0; y < w; y++) {
 		// 	for (var x = 0; x < h; x++) {
@@ -43,7 +46,19 @@ Level = Class.extend({
 				if (y < 0 || x < 0 || y >= this.h || x >= this.w) {
 					gTileLibrary['water'].render(screen, x * screen.tileSize, y * screen.tileSize);
 				} else {
-					gTileLibrary[this.map[y][x].id].render(screen, x * screen.tileSize, y * screen.tileSize);
+					var townTile = false;
+					for (var i = 0; i < this.towns.length; i++) {
+						if (this.towns[i].isInTown(x, y, 0)) {
+							townTile = true;
+							break;
+						}
+					}
+					var currentTile = gTileLibrary[this.map[y][x].id];
+					if (townTile && currentTile.mayPass(this, x, y)) {
+						gTileLibrary['dirt'].render(screen, x * screen.tileSize, y * screen.tileSize);
+					} else {
+						currentTile.render(screen, x * screen.tileSize, y * screen.tileSize);
+					}
 				}
 			}
 		}
@@ -104,15 +119,21 @@ Level = Class.extend({
 		screen.ctx.putImageData(this.minimap, 0, 0);
 	},
 
-	renderSprites: function(screen, xScroll, yScroll) {
+	renderSprites: function(screen, xScroll, yScroll, player) {
 		for (var i = 0; i < this.entities.length; i++) {
 			this.entities[i].render(screen, xScroll, yScroll);
 		}
+		for (var i = 0; i < this.towns.length; i++) {
+			this.towns[i].render(screen, player.x, player.y);
+		}
 	},
 
-	tick: function() {
+	tick: function(msPerTick) {
 		for (var i = 0; i < this.entities.length; i++) {
-			this.entities[i].tick();
+			this.entities[i].tick(msPerTick);
+		}
+		for (var i = 0; i < this.towns.length; i++) {
+			this.towns[i].tick(msPerTick);
 		}
 	},
 
@@ -124,5 +145,15 @@ Level = Class.extend({
 		// 	console.log("tile @ xt="+xt+" /yt="+yt+" tile:"+this.map[yt][xt]);
 		// }
 		return gTileLibrary[this.map[yt][xt].id];
-	}
+	},
+
+	bumpedInto: function(level, xt, yt, entity) {
+		for (var i = 0; i < this.towns.length; i++) {
+			if (this.towns[i].isInTown(xt, yt, 0)) {
+				this.towns[i].enter();
+			} else {
+				this.towns[i].leave();
+			}
+		}
+	},
 });
