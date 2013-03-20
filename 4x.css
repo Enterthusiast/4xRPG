@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'League_Gothic';
+    src: url('res/fonts/League_Gothic.otf');
+}
+@font-face {
+    font-family: 'Unibody_8-Black';
+    src: url('res/fonts/Unibody 8-Black.otf');
+}
+@font-face {
+    font-family: 'Unibody_8-Bold';
+    src: url('res/fonts/Unibody 8-Bold.otf');
+}
+@font-face {
+    font-family: 'Unibody_8-Italic';
+    src: url('res/fonts/Unibody 8-Italic.otf');
+}
+@font-face {
+    font-family: 'Unibody_8-Regular';
+    src: url('res/fonts/Unibody 8-Regular.otf');
+}
+@font-face {
+    font-family: 'Unibody_8-SmallCaps';
+    src: url('res/fonts/Unibody 8-SmallCaps.otf');
+}
