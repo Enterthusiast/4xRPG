@@ -99,9 +99,11 @@ Game = Class.extend({
 		} else {
 			this.gameTime++;
 
-			gInputHandler.tick();
+			gInputHandler.tick(msPerTick);
 
-			this.level.tick();
+			this.level.tick(msPerTick);
+
+			this.screen.tick(msPerTick);
 		}
 	},
 
@@ -118,7 +120,9 @@ Game = Class.extend({
 		this.screen.clearBackground();
 
 		this.level.renderBackground(this.screen, xScroll, yScroll);
-		this.level.renderSprites(this.screen, xScroll, yScroll);
+		this.level.renderSprites(this.screen, xScroll, yScroll, this.player);
+
+		this.screen.renderJobs();
 
 		// this.level.renderMinimap(this.screen, xScroll, yScroll);
 
