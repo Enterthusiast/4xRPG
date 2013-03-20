@@ -39,33 +39,44 @@ Screen = Class.extend({
 		this.yOffset = y;
 	},
 
+	renderText: function(text, x, y, align, baseLine, font) {
+		this.ctx.font = font;
+
+		this.ctx.textBaseline = baseLine;
+		this.ctx.textAlign = align;
+
+		this.ctx.fillText(text, x, y);
+	},
+
 	renderDebugText: function(text, position) {
-		this.ctx.font = 'bold 12px sans-serif';
+		var font = 'bold 12px sans-serif';
+		var align = '';
+		var baseLine = '';
 		var textX = 0;
 		var textY = 0;
 
 		if (position == 'bottom-right') {
-			this.ctx.textBaseline = 'bottom';
-			this.ctx.textAlign = 'right';
+			baseLine = 'bottom';
+			align = 'right';
 			textX = this.xTiles * this.tileSize;
 			textY = this.yTiles * this.tileSize;
 		} else if (position == 'top-right') {
-			this.ctx.textBaseline = 'top';
-			this.ctx.textAlign = 'right';
+			baseLine = 'top';
+			align = 'right';
 			textX = this.xTiles * this.tileSize;
 			textY = 0;
 		} else if (position == 'bottom-left') {
-			this.ctx.textBaseline = 'bottom';
-			this.ctx.textAlign = 'left';
+			baseLine = 'bottom';
+			align = 'left';
 			textX = 0;
 			textY = this.yTiles * this.tileSize;
 		} else if (position == 'top-left') {
-			this.ctx.textBaseline = 'top';
-			this.ctx.textAlign = 'left';
+			baseLine = 'top';
+			align = 'left';
 			textX = 0;
 			textY = 0;
 		}
 
-		this.ctx.fillText(text, textX, textY);
+		this.renderText(text, textX, textY, align, baseLine, font);
 	}
 });
