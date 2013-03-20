@@ -147,7 +147,8 @@ LevelGen = Class.extend({
 				var tile = Math.floor(this.map[y][x]);
 
 				var mapTile = {
-					id: 0
+					id: 0,
+					cornerMap: 0
 				}
 
 				if (tile <= waterline) {
@@ -189,6 +190,25 @@ LevelGen = Class.extend({
 		console.log("map total :\n\t"+rockCount+" rock / "+grassCount+" grass / "+sandCount+" sand / "+waterCount+" water / "+treeCount+" tree");
 
 		return this.map;
+	},
+
+	getTowns: function() {
+		var towns = [];
+
+		var xt = Math.floor((this.w / 10) + (Math.random() * this.w * 0.8));
+		var yt = Math.floor((this.w / 10) + (Math.random() * this.h * 0.8));
+
+		while (this.map[yt][xt].id == gTileLibrary['water'].id || this.map[yt][xt].id == gTileLibrary['rock'].id) {
+			var dir = Math.floor(Math.random * 4);
+			if (dir == 0) xt++;
+			if (dir == 1) xt--;
+			if (dir == 2) yt++;
+			if (dir == 3) yt--;
+		}
+
+		towns[0] = new Town(0, xt, yt);
+
+		return towns;
 	},
 
 	getWaterLine: function() {
