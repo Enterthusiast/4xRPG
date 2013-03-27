@@ -5,7 +5,7 @@ import xrpg.game.level.Level;
 
 public class TreeTile extends Tile {
 
-	public TreeTile(char tileId, int layer) {
+	public TreeTile(byte tileId, int layer) {
 		super(tileId, layer);
 
 		m_sprite = "tree.png";

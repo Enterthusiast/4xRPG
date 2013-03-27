@@ -17,6 +17,31 @@ import org.newdawn.slick.util.FontUtils;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Screen {
+
+	/**
+	 * Corner maps looks like this:
+	 *
+	 * 00 10 01 11 00 10 01 11 00 10 01 11 00 10 01 11
+	 * 00 00 00 00 10 10 10 10 01 01 01 01 11 11 11 11
+	 * 
+	 * With 0 meaning the material is invisible, & 1 meaning the material is visible.
+	 */	
+	public static byte CORNER_EMPTY 			= 0x00;
+	public static byte CORNER_TOP_LEFT 			= 0x01;
+	public static byte CORNER_TOP_RIGHT 		= 0x02;
+	public static byte CORNER_TOP 				= 0x03;
+	public static byte CORNER_BOTTOM_LEFT 		= 0x04;
+	public static byte CORNER_LEFT 				= 0x05;
+	public static byte CORNER_SLASH 			= 0x06;
+	public static byte CORNER_FULL_TOP_LEFT 	= 0x07;
+	public static byte CORNER_BOTTOM_RIGHT 		= 0x08;
+	public static byte CORNER_ANTISLASH 		= 0x09;
+	public static byte CORNER_RIGHT 			= 0x0a;
+	public static byte CORNER_FULL_TOP_RIGHT 	= 0x0b;
+	public static byte CORNER_BOTTOM 			= 0x0c;
+	public static byte CORNER_FULL_BOTTOM_LEFT 	= 0x0d;
+	public static byte CORNER_FULL_BOTTOM_RIGHT = 0x0e;
+	public static byte CORNER_FULL 				= 0x0f;
 	
 	public static final int TILESIZE = 32;
 	public static final int XTILES = 24;
@@ -66,6 +91,25 @@ public class Screen {
 		return m_textureMap.get(sprite);
 	}
 	
+	private void drawSpriteFromSheet(Texture sheet, int x, int y, byte corner) {
+		Color.white.bind();
+		sheet.bind();
+		
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glTexCoord2f(corner / (float)(CORNER_FULL + 1), 0);
+			GL11.glVertex2f(x, y);
+
+			GL11.glTexCoord2f((corner + 1) / (float)(CORNER_FULL + 1), 0);
+			GL11.glVertex2f(x + TILESIZE, y);
+
+			GL11.glTexCoord2f((corner + 1) / (float)(CORNER_FULL + 1), 1);
+			GL11.glVertex2f(x + TILESIZE, y + TILESIZE);
+
+			GL11.glTexCoord2f(corner / (float)(CORNER_FULL + 1), 1);
+			GL11.glVertex2f(x, y + TILESIZE);
+		GL11.glEnd();
+	}
+	
 	private void drawSprite(Texture texture, int x, int y, Color bindColor) {
 		bindColor.bind();
 		texture.bind();
@@ -83,6 +127,10 @@ public class Screen {
 			GL11.glTexCoord2f(0, 1);
 			GL11.glVertex2f(x, y + texture.getTextureHeight());
 		GL11.glEnd();
+	}
+
+	public void render(String sheet, int x, int y, byte corner) throws IOException {
+		drawSpriteFromSheet(getTexture(sheet), x - m_offsetX, y - m_offsetY, corner);
 	}
 
 	public void render(String sprite, int x, int y) throws IOException {

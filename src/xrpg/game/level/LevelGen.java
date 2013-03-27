@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import xrpg.game.Screen;
 import xrpg.game.level.tile.Tile;
 
 public abstract class LevelGen {
@@ -62,7 +63,11 @@ public abstract class LevelGen {
 		}
 	}
 
-	private static char[][] createIsland(Random random, int w, int h) {
+	private static byte mapCorners(int w, int h, int x, int y, byte[][][] tileMap, byte currentTileId) {
+		return Screen.CORNER_FULL;
+	}
+	
+	private static byte[][][] createIsland(Random random, int w, int h) {
 		double[][] map = PerlinNoise.generateNoise(random, w, h, FREQUENCY, OCTAVES);
 
 		int[][] particleMap = new int[h][w];
@@ -138,46 +143,52 @@ public abstract class LevelGen {
 
 		System.out.println("Waterline is @ " + waterline);
 		// Generate ground.
-		char[][] tileMap = new char[h][w];
+		byte[][][] tileMap = new byte[h][w][2];
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				double tile = Math.floor(map[y][x]);
 
-				char mapTile;
+				byte[] mapTile = new byte[2];
+				mapTile[1] = Screen.CORNER_FULL;
 
 				if (tile <= waterline) {
-					mapTile = Tile.ms_water.m_tileId;
+					mapTile[0] = Tile.ms_water.m_tileId;
 					waterCount++;
 				} else if (tile > waterline && tile <= waterline + 15) {
-					mapTile = Tile.ms_sand.m_tileId;
+					mapTile[0] = Tile.ms_sand.m_tileId;
+					mapTile[1] = mapCorners(w, h, x, y, tileMap, Tile.ms_sand.m_tileId);
 					sandCount++;
 				} else if (tile > waterline + 15 && tile <= waterline + 60) {
-					mapTile = Tile.ms_grass.m_tileId;
+					mapTile[0] = Tile.ms_grass.m_tileId;
+					mapTile[1] = mapCorners(w, h, x, y, tileMap, Tile.ms_grass.m_tileId);
 					grassCount++;
 				} else {
-					mapTile = Tile.ms_rock.m_tileId;
+					mapTile[0] = Tile.ms_rock.m_tileId;
+					mapTile[1] = mapCorners(w, h, x, y, tileMap, Tile.ms_rock.m_tileId);
 					rockCount++;
 				}
 
 				// Add trees.
-				if (mapTile == Tile.ms_grass.m_tileId) {
+				if (mapTile[0] == Tile.ms_grass.m_tileId) {
 					if (random.nextInt(10) == 0) {
-						mapTile = Tile.ms_tree.m_tileId;
+						mapTile[0] = Tile.ms_tree.m_tileId;
+						
 						grassCount--;
 						treeCount++;
 					}
 				}
 
 				// Add cacti.
-				if (mapTile == Tile.ms_sand.m_tileId) {
+				if (mapTile[0] == Tile.ms_sand.m_tileId) {
 					if (random.nextInt(30) == 0) {
-						mapTile = Tile.ms_cactus.m_tileId;
+						mapTile[0] = Tile.ms_cactus.m_tileId;
 						grassCount--;
 						treeCount++;
 					}
 				}
 
-				tileMap[y][x] = mapTile;
+				tileMap[y][x][0] = mapTile[0];
+				tileMap[y][x][1] = mapTile[1];
 			}
 		}
 
@@ -186,13 +197,13 @@ public abstract class LevelGen {
 		return tileMap;
 	}
 
-	public static List<Town> getTowns(Random random, int w, int h, char[][] map) {
+	public static List<Town> getTowns(Random random, int w, int h, byte[][][] map) {
 		List<Town> towns = new ArrayList<Town>();
 
 		int xt = (int) Math.floor((w / 10) + (random.nextFloat() * w * 0.8));
 		int yt = (int) Math.floor((w / 10) + (random.nextFloat() * h * 0.8));
 
-		while (map[yt][xt] == Tile.ms_water.m_tileId || map[yt][xt] == Tile.ms_rock.m_tileId) {
+		while (map[yt][xt][0] == Tile.ms_water.m_tileId || map[yt][xt][0] == Tile.ms_rock.m_tileId) {
 			int dir = random.nextInt(4);
 			if (dir == 0) xt++;
 			if (dir == 1) xt--;
@@ -220,7 +231,7 @@ public abstract class LevelGen {
 		return values[(int) Math.floor((values.length - 1) * 0.40)];
 	}
 
-	public static char[][] createSurfaceMap(Random random, int w, int h) {
+	public static byte[][][] createSurfaceMap(Random random, int w, int h) {
 		return createIsland(random, w, h);
 	}
 }

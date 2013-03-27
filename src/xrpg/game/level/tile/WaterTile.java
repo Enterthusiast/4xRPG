@@ -5,10 +5,11 @@ import xrpg.game.level.Level;
 
 public class WaterTile extends Tile {
 
-	public WaterTile(char tileId, int layer) {
+	public WaterTile(byte tileId, int layer) {
 		super(tileId, layer);
 
 		m_sprite = "water.png";
+		m_cornerTile = true;
 	}
 	
 	@Override

@@ -5,10 +5,11 @@ import xrpg.game.level.Level;
 
 public class RockTile extends Tile {
 
-	public RockTile(char tileId, int layer) {
+	public RockTile(byte tileId, int layer) {
 		super(tileId, layer);
 
 		m_sprite = "rock.png";
+		m_cornerTile = true;
 	}
 	
 	@Override
