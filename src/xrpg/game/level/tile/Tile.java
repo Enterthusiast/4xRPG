@@ -19,6 +19,7 @@ public abstract class Tile {
 	protected String m_sprite = "";
 
 	public char m_tileId;
+	public char m_damage;
 
 	@SuppressWarnings("unused")
 	private int m_layer = -1;
@@ -28,10 +29,15 @@ public abstract class Tile {
 	}
 	
 	public Tile(char tileId, int layer) {
+		this(tileId, layer, (char)0);
+	}
+	
+	public Tile(char tileId, int layer, char damage) {
 		Tile.ms_tiles[tileId] = this;
 
 		m_tileId = tileId;
 		m_layer = layer;
+		m_damage = damage;
 	}
 
 	public void render(Screen screen, int x, int y) throws IOException {
@@ -40,6 +46,15 @@ public abstract class Tile {
 	
 	public void steppedOn(Level level, int xt, int yt, Entity entity) {
 		
+	}
+	
+	public boolean bumpedInto(Level level, int xt, int yt, Entity entity) {
+		if (m_damage != 0) {
+			entity.hurt(this, xt, yt, m_damage);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public boolean mayPass(Level level, int xt, int yt, Entity entity) {
