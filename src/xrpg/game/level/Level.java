@@ -13,6 +13,7 @@ import xrpg.game.level.tile.Tile;
 public class Level {
 	public Random m_random;
 	public String m_seed;
+	public Player m_player;
 	
 	public int m_w;
 	public int m_h;
@@ -82,18 +83,23 @@ public class Level {
 		// todo
 	}
 	
-	public void renderSprites(Screen screen, int xScroll, int yScroll, Player player) throws IOException {
+	public void renderSprites(Screen screen, int xScroll, int yScroll) throws IOException {
 		for (Entity entity : m_entities) {
 			entity.render(screen, xScroll, yScroll);
 		}
 		for (Town town : m_towns) {
-			town.render(screen, player.m_x, player.m_y);
+			town.render(screen, m_player.m_x, m_player.m_y);
 		}
 	}
 	
 	public void tick() {
-		for (Entity entity : m_entities) {
+		for (int i = 0; i < m_entities.size(); i++) {
+			Entity entity = m_entities.get(i);
 			entity.tick();
+			
+			if (entity.m_remove) {
+				m_entities.remove(i--);
+			}
 		}
 		for (Town town : m_towns) {
 			town.tick();
@@ -105,6 +111,10 @@ public class Level {
 	}
 
 	public void bumpedInto(int xt, int yt, Entity entity) {
+		if (Tile.getTile(m_map[yt][xt]).bumpedInto(this, xt, yt, entity) == false) {
+			return;
+		}
+
 		for (Town town : m_towns) {
 			if (town.isInTown(xt, yt, 0)) {
 				town.enter();

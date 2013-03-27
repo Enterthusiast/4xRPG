@@ -7,6 +7,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 
 import xrpg.game.entity.Player;
 import xrpg.game.level.Level;
@@ -33,7 +34,6 @@ public class Xrpg implements Runnable {
 	private Screen m_screen;
 	private InputHandler m_inputHandler;
 	private Level m_level;
-	private Player m_player;
 	
 	public float x = Screen.XTILES * Screen.TILESIZE / 2;
 	public float y = Screen.YTILES * Screen.TILESIZE / 2;
@@ -48,7 +48,7 @@ public class Xrpg implements Runnable {
 		m_screen = new Screen();
 		m_inputHandler = new InputHandler();
 		m_level = new Level(MAP_W, MAP_H, MAP_SEED);
-		m_player = new Player(m_level, m_inputHandler, (MAP_W * Screen.TILESIZE) / 2, (MAP_H * Screen.TILESIZE) / 2);
+		m_level.m_player = new Player(m_level, m_inputHandler, (MAP_W * Screen.TILESIZE) / 2, (MAP_H * Screen.TILESIZE) / 2);
 	}
 	
 	private boolean hasFocus() {
@@ -75,15 +75,15 @@ public class Xrpg implements Runnable {
 	}
 	
 	private void render() throws IOException {
-		int xScroll = m_player.m_x - (Screen.W / 2);
-		int yScroll = m_player.m_y - (Screen.H / 2);
+		int xScroll = m_level.m_player.m_x - (Screen.W / 2);
+		int yScroll = m_level.m_player.m_y - (Screen.H / 2);
 		
 		m_inputHandler.pollInput();
 
 		m_screen.clearBackground();
 
 		m_level.renderBackground(m_screen, xScroll, yScroll);
-		m_level.renderSprites(m_screen, xScroll, yScroll, m_player);
+		m_level.renderSprites(m_screen, xScroll, yScroll);
 
 		m_screen.renderJobs();
 		
@@ -91,8 +91,14 @@ public class Xrpg implements Runnable {
 
 		// m_screen.renderAnnouncementText("text", "subText", 1.0f);
 		
-		if (!this.hasFocus()) {
+		if (!hasFocus()) {
 			renderFocusGUI();
+		}
+		
+		if (m_level.m_player.m_remove) {
+			m_level.m_player.m_remove = false;
+
+			m_screen.addAnnouncementJob("Game Over", "Yes, you're dead.", 2000, Color.white, false);
 		}
 	}
 	

@@ -2,14 +2,19 @@ package xrpg.game.entity;
 
 import java.io.IOException;
 
+import org.newdawn.slick.Color;
+
 import xrpg.game.InputHandler;
 import xrpg.game.Screen;
 import xrpg.game.Screen.RenderPosition;
 import xrpg.game.level.Level;
+import xrpg.game.level.tile.Tile;
 
 public class Player extends Entity {
 	private static final int SPEED_WALK = 2;
 	private static final int SPEED_RUN = 4;
+	private static final int PUSH_DISTANCE = 10;
+	private static final char MAX_LIFE = 20;
 	
 	private String[][] m_sprites = {
 				{ "char_down_still.png", "char_down_move1.png", "char_down_move2.png", "char_down_move1.png" },
@@ -29,6 +34,18 @@ public class Player extends Entity {
 		Direction(int value) {
 			m_v = value;
 		}
+		
+		Direction getOpposite() {
+			if (this == DOWN) {
+				return UP;
+			} else if (this == UP) {
+				return DOWN;
+			} else if (this == LEFT) {
+				return RIGHT;
+			}
+			
+			return LEFT;
+		}
 	}
 	
 	private int m_spawnX = 0;
@@ -39,8 +56,13 @@ public class Player extends Entity {
 	
 	public int m_xr = 10;
 	public int m_yr = 15;
+
+	public int m_xPush = 0;
+	public int m_yPush = 0;
 	
 	private int m_walkDist = 0;
+	private char m_life = MAX_LIFE;
+	private int m_hurtTime = 0;
 	private Direction m_dir = Direction.DOWN;
 	private Level m_level;
 	private InputHandler m_input;
@@ -76,6 +98,24 @@ public class Player extends Entity {
 	}
 	
 	private boolean move(int xa, int ya) {
+		if (m_xPush < 0) {
+			moveTo(-1, 0);
+			m_xPush++;
+		} else if (m_xPush > 0) {
+			moveTo(+1, 0);
+			m_xPush--;
+		} else if (m_yPush < 0) {
+			moveTo(0, -1);
+			m_yPush++;
+		} else if (m_yPush > 0) {
+			moveTo(0, +1);
+			m_yPush--;
+		}
+		
+		if (m_hurtTime > 0) {
+			return true;
+		}
+
 		// While moving in both direction, reduce the speed vector.
 		if (xa != 0 && ya != 0) {
 			if (xa < 0) xa++;
@@ -141,7 +181,21 @@ public class Player extends Entity {
 		return true;
 	}
 	
+	@Override
+	protected void die() {		
+		super.die();
+	}
+
+	@Override
 	public void tick() {
+		if (m_life <= 0) {
+			die();
+		}
+
+		if (m_hurtTime > 0) {
+			m_hurtTime--;
+		}
+		
 		int xa = 0;
 		int ya = 0;
 		
@@ -156,10 +210,41 @@ public class Player extends Entity {
 		this.move(xa, ya);
 	}
 	
+	@Override
+	protected void hurt(int damage, Direction pushDirection) {
+		if (m_hurtTime > 0) {
+			return;
+		}
+		
+		m_life -= damage;
+		
+		if (pushDirection == Direction.DOWN) {
+			m_yPush = +PUSH_DISTANCE;
+		} else if (pushDirection == Direction.UP) {
+			m_yPush = -PUSH_DISTANCE;
+		} else if (pushDirection == Direction.LEFT) {
+			m_xPush = -PUSH_DISTANCE;
+		} else if (pushDirection == Direction.RIGHT) {
+			m_xPush = +PUSH_DISTANCE;
+		}
+
+		m_hurtTime = 10;
+	}
+	
+	@Override
+	public void hurt(Tile tile, int x, int y, int damage) {
+		hurt(damage, m_dir.getOpposite());
+	}
+	
 	public void render(Screen screen, int xScroll, int yScroll) throws IOException {
 		int tile = ((m_walkDist >> 3) % m_sprites[m_dir.m_v].length);
+		
+		Color bindColor = Color.white;
+		if (m_hurtTime > 0) {
+			bindColor = Color.red;
+		}
 
-		screen.render(m_sprites[m_dir.m_v][tile], Screen.W / 2, Screen.H / 2);
+		screen.render(m_sprites[m_dir.m_v][tile], Screen.W / 2, Screen.H / 2, bindColor);
 
 		screen.renderDebugText("player @ "+m_x+" ("+(m_x>>5)+"),"+m_y+" ("+(m_y>>5)+")", RenderPosition.TOP_RIGHT);
 	}
