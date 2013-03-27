@@ -48,13 +48,10 @@ public abstract class Tile {
 		
 	}
 	
-	public boolean bumpedInto(Level level, int xt, int yt, Entity entity) {
+	public void bumpedInto(Level level, int xt, int yt, Entity entity) {
 		if (m_damage != 0) {
 			entity.hurt(this, xt, yt, m_damage);
-			return true;
 		}
-		
-		return false;
 	}
 	
 	public boolean mayPass(Level level, int xt, int yt, Entity entity) {

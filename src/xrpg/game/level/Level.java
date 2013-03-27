@@ -111,9 +111,7 @@ public class Level {
 	}
 
 	public void bumpedInto(int xt, int yt, Entity entity) {
-		if (Tile.getTile(m_map[yt][xt]).bumpedInto(this, xt, yt, entity) == false) {
-			return;
-		}
+		Tile.getTile(m_map[yt][xt]).bumpedInto(this, xt, yt, entity);
 
 		for (Town town : m_towns) {
 			if (town.isInTown(xt, yt, 0)) {
