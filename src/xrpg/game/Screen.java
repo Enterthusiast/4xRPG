@@ -36,12 +36,16 @@ public class Screen {
 		long m_counter = 0;
 		float m_alpha = 0;
 		long m_time = 0;
+		Color m_color = Color.black;
+		boolean m_fadeOut = false;
 		
-		Job(String text, String subText, long time) {
+		Job(String text, String subText, long time, Color renderColor, boolean fadeOut) {
 			m_text = text;
 			m_subText = subText;
 			m_time = time;
 			m_counter = time;
+			m_color = renderColor;
+			m_fadeOut = fadeOut;
 		}
 	}
 	
@@ -62,8 +66,8 @@ public class Screen {
 		return m_textureMap.get(sprite);
 	}
 	
-	private void drawSprite(Texture texture, int x, int y) {
-		Color.white.bind();
+	private void drawSprite(Texture texture, int x, int y, Color bindColor) {
+		bindColor.bind();
 		texture.bind();
 		
 		GL11.glBegin(GL11.GL_QUADS);
@@ -80,9 +84,13 @@ public class Screen {
 			GL11.glVertex2f(x, y + texture.getTextureHeight());
 		GL11.glEnd();
 	}
-	
+
 	public void render(String sprite, int x, int y) throws IOException {
-		drawSprite(getTexture(sprite), x - m_offsetX, y - m_offsetY);
+		render(sprite, x, y, Color.white);
+	}
+	
+	public void render(String sprite, int x, int y, Color bindColor) throws IOException {
+		drawSprite(getTexture(sprite), x - m_offsetX, y - m_offsetY, bindColor);
 	}
 	
 	public void setOffset(int x, int y) {
@@ -139,25 +147,33 @@ public class Screen {
 	}
 
 	public void renderAnnouncementText(String text, String subText, float progress) {
+		renderAnnouncementText(text, subText, progress, Color.black, true);
+	}
+
+	public void renderAnnouncementText(String text, String subText, float progress, Color renderColor, boolean fadeOut) {
 		Color.white.bind();
 
         float alpha = 1.0f;
         if (progress > 0.7) {
             alpha = (0.3f - (progress - 0.7f)) / 0.3f;
-        } else if (progress < 0.3f) {
+        } else if (progress < 0.3f && fadeOut) {
             alpha = progress / 0.3f;
-        } else if (progress <= 0.0f) {
+        } else if (progress <= 0.0f && fadeOut) {
             return;
         }
         
-		Color textColor = new Color(0.0f, 0.0f, 0.0f, alpha);
+		Color textColor = new Color(renderColor.r, renderColor.g,renderColor.b, alpha);
 
 		FontUtils.drawCenter(m_fonts.get(ANNOUNCEMENT_TEXT_FONT), text, (XTILES * TILESIZE) / 2,  TILESIZE * 3, 0, textColor);
 		FontUtils.drawCenter(m_fonts.get(ANNOUNCEMENT_SUBTEXT_FONT), subText, (XTILES * TILESIZE) / 2, (int)(TILESIZE * 4.5f), 0, textColor);
 	}
 	
 	public void addAnnouncementJob(String text, String subText, long time) {
-		m_jobs.add(new Job(text, subText, time));
+		addAnnouncementJob(text, subText, time, Color.black, true);
+	}
+	
+	public void addAnnouncementJob(String text, String subText, long time, Color renderColor, boolean fadeOut) {
+		m_jobs.add(new Job(text, subText, time, renderColor, fadeOut));
 	}
 	
 	public void tick() {
@@ -176,7 +192,7 @@ public class Screen {
 				
 				job.m_alpha = (float)job.m_counter / (float)job.m_time;
 				//System.out.println(job.m_alpha);
-			} else {
+			} else if (job.m_fadeOut == true){
 				trash.add(job);
 			}
 		}
@@ -186,7 +202,7 @@ public class Screen {
 	
 	public void renderJobs() {		
 		for (Job job : m_jobs) {
-			renderAnnouncementText(job.m_text, job.m_subText, job.m_alpha);
+			renderAnnouncementText(job.m_text, job.m_subText, job.m_alpha, job.m_color, job.m_fadeOut);
 		}
 	}
 }
