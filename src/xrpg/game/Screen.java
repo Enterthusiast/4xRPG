@@ -172,8 +172,14 @@ public class Screen {
 		addAnnouncementJob(text, subText, time, Color.black, true);
 	}
 	
+	public void addAnnouncementJob(String text, String subText, long time, Color renderColor) {
+		addAnnouncementJob(text, subText, time, renderColor, true);
+	}
+	
 	public void addAnnouncementJob(String text, String subText, long time, Color renderColor, boolean fadeOut) {
-		m_jobs.add(new Job(text, subText, time, renderColor, fadeOut));
+		if (m_jobs.isEmpty()) {
+			m_jobs.add(new Job(text, subText, time, renderColor, fadeOut));
+		}
 	}
 	
 	public void tick() {
