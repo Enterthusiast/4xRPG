@@ -56,7 +56,7 @@ public class Screen {
 	
 	private Texture getTexture(String sprite) throws IOException {
 		if (!m_textureMap.containsKey(sprite)) {
-			m_textureMap.put(sprite, TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/src/" + sprite)));
+			m_textureMap.put(sprite, TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/" + sprite)));
 		}
 		 
 		return m_textureMap.get(sprite);
