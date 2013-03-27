@@ -2,6 +2,8 @@ package xrpg.game.level;
 
 import java.util.Random;
 
+import org.newdawn.slick.Color;
+
 import xrpg.game.NameGen;
 import xrpg.game.Screen;
 import xrpg.game.Xrpg;
@@ -11,7 +13,9 @@ public class Town {
 	public static final int CHEST_CAPACITY_STEP = 50;
 	public static final int CHEST_CAPACITY_VAR = 5;
 	public static final int CHEST_COUNTER_MS = 30000;
-	public static final int TITLE_DISPLAY_TIME_MS = 2000;
+	public static final int TITLE_DISPLAY_TIME_MS = 3000;
+	public static final int CONQUER_DISPLAY_TIME_MS = 5000;
+	public static final int CONQUER_TIME_MS = 10000;
 	
 	public enum State {
 		Hostile,
@@ -35,8 +39,10 @@ public class Town {
 	public State m_state = State.Hostile;
 	public Chest m_chest = new Chest();
 	
-	public boolean m_announce = false;
+	public boolean m_territoryAnnounce = false;
+	public boolean m_conquerAnnounce = false;
 	public EntityState m_entered = EntityState.Out;
+	public int m_conquerCounter = CONQUER_TIME_MS;
 	public int m_xt = 0;
 	public int m_yt = 0;
 	public int m_w = 21;
@@ -64,10 +70,21 @@ public class Town {
 
 	public void tick() {
 		if (m_state == State.Conquered) {
-			m_chest.m_counter += Xrpg.NS_PER_TICK;
+			m_chest.m_counter += Xrpg.MS_PER_TICK;
 			if (m_chest.m_counter > CHEST_COUNTER_MS && m_chest.m_amount < m_chest.m_capacity) {
 				m_chest.m_amount++;
 				m_chest.m_counter = 0;
+			}
+		}
+		
+		if (m_state == State.Hostile) {
+			if (m_entered == EntityState.In) {
+				m_conquerCounter -= Xrpg.MS_PER_TICK;
+				
+				if (m_conquerCounter <= 0) {
+					m_state = State.Conquered;
+					m_conquerAnnounce = true;
+				}
 			}
 		}
 	}
@@ -82,20 +99,28 @@ public class Town {
 
 	public void enter() {
 		if (m_entered != EntityState.In) {
-			m_announce = true;
+			m_territoryAnnounce = true;
 		}
 		m_entered = EntityState.In;
 	}
 
 	public void leave() {
 		m_entered = EntityState.Out;
+		
+		if (m_state != State.Conquered) {
+			m_conquerCounter = CONQUER_TIME_MS;
+		}
 	}
 
 	public void render(Screen screen, int playerX, int playerY) {
 		// screen.renderDebugText(this.name + " " + this.entered, 'bottom-left');
 
-		if (m_announce) {
-			m_announce = false;
+		if (m_conquerAnnounce) {
+			m_conquerAnnounce = false;
+			screen.addAnnouncementJob(m_name + " conquered !", "You can now access this town's chest.", CONQUER_DISPLAY_TIME_MS, Color.white);
+		}
+		if (m_territoryAnnounce) {
+			m_territoryAnnounce = false;
 			screen.addAnnouncementJob(m_name, m_state.toString() + " territory", TITLE_DISPLAY_TIME_MS);
 		}
 	}
