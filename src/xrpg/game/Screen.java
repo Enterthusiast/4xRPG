@@ -19,7 +19,7 @@ import org.newdawn.slick.util.ResourceLoader;
 public class Screen {
 
 	/**
-	 * Corner maps looks like this:
+	 * Corner maps look like this:
 	 *
 	 * 00 10 01 11 00 10 01 11 00 10 01 11 00 10 01 11
 	 * 00 00 00 00 10 10 10 10 01 01 01 01 11 11 11 11
