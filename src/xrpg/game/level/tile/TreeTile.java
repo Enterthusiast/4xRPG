@@ -9,6 +9,8 @@ public class TreeTile extends Tile {
 		super(tileId, layer);
 
 		m_sprite = "tree.png";
+		m_connectsTo[Tile.ms_grass.m_tileId] = true;
+		m_connectsTo[Tile.ms_sand.m_tileId] = true;
 	}
 	
 	@Override

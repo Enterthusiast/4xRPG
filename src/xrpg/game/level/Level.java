@@ -18,7 +18,7 @@ public class Level {
 	public int m_w;
 	public int m_h;
 	
-	public byte[][][] m_map;
+	public byte[][] m_map;
 	public List<Town> m_towns;
 	public List<Entity> m_entities = new ArrayList<Entity>();
 	
@@ -33,12 +33,6 @@ public class Level {
 
 		m_map = LevelGen.createSurfaceMap(m_random, m_w, m_h);
 		m_towns = LevelGen.getTowns(m_random, m_w, m_h, m_map);
-
-		// for (int y = 0; y < m_w; y++) {
-		// 	for (int x = 0; x < m_h; x++) {
-		// 		System.out.println("this.map["+y+"]["+x+"]="+this.map[y][x]);
-		// 	}
-		// }
 	}
 	
 	public boolean addEntity(Entity entity) {
@@ -53,7 +47,7 @@ public class Level {
 		for (int y = y0; y < Screen.YTILES + y0 + 2; y++) {
 			for (int x = x0; x < Screen.XTILES + x0 + 2; x++) {
 				if (y < 0 || x < 0 || y >= m_h || x >= m_w) {
-					Tile.ms_water.render(screen, x * Screen.TILESIZE, y * Screen.TILESIZE, Screen.CORNER_FULL);
+					Tile.ms_water.render(screen, this, x, y);
 				} else {
 					boolean townTile = false;
 					for (Town town : m_towns) {
@@ -62,11 +56,11 @@ public class Level {
 							break;
 						}
 					}
-					Tile currentTile = Tile.getTile(m_map[y][x][0]);
+					Tile currentTile = Tile.getTile(m_map[y][x]);
 					if (townTile && currentTile.mayPass(this, x, y, null)) {
-						Tile.ms_dirt.render(screen, x * Screen.TILESIZE, y * Screen.TILESIZE, Screen.CORNER_FULL);
+						Tile.ms_dirt.render(screen, this, x, y);
 					} else {
-						currentTile.render(screen, x * Screen.TILESIZE, y * Screen.TILESIZE,m_map[y][x][1]);
+						currentTile.render(screen, this, x, y);
 					}
 				}
 			}
@@ -107,11 +101,11 @@ public class Level {
 	}
 	
 	public Tile getTile(int xt, int yt) {
-		return Tile.getTile(m_map[yt][xt][0]);
+		return Tile.getTile(m_map[yt][xt]);
 	}
 
 	public void bumpedInto(int xt, int yt, Entity entity) {
-		Tile.getTile(m_map[yt][xt][0]).bumpedInto(this, xt, yt, entity);
+		Tile.getTile(m_map[yt][xt]).bumpedInto(this, xt, yt, entity);
 
 		for (Town town : m_towns) {
 			if (town.isInTown(xt, yt, 0)) {

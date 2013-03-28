@@ -10,6 +10,7 @@ public class WaterTile extends Tile {
 
 		m_sprite = "water.png";
 		m_cornerTile = true;
+		m_connectsTo[tileId] = true;
 	}
 	
 	@Override
