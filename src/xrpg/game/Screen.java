@@ -74,6 +74,12 @@ public class Screen {
 		}
 	}
 	
+	public enum Align {
+		CENTER,
+		LEFT,
+		RIGHT;
+	}
+	
 	private List<Job> m_jobs = new ArrayList<Job>();
 	
 	public enum RenderPosition {
@@ -150,10 +156,6 @@ public class Screen {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);		
 	}
 	
-	public void renderText(String text, int x, int y) {
-		
-	}
-	
 	private Map<Integer, UnicodeFont> m_fonts = new HashMap<Integer, UnicodeFont>();
 	private static final String FONT = "res/fonts/Unibody 8-Bold.ttf";
 	private static final int DEBUG_FONT = 12;
@@ -186,6 +188,24 @@ public class Screen {
 		m_fonts.put(ANNOUNCEMENT_SUBTEXT_FONT, loadFont(ANNOUNCEMENT_SUBTEXT_FONT, true, false, true));
 		
 		m_fonts.put(DEBUG_FONT, loadFont(DEBUG_FONT, true, false, false));
+	}
+	
+	public void renderText(String text, int x, int y, Align align) {
+		Color.white.bind();
+		
+		switch (align) {
+			case CENTER:
+				FontUtils.drawCenter(m_fonts.get(DEBUG_FONT), text, x,  y, 0, Color.yellow);
+				break;
+
+			case LEFT:
+				m_fonts.get(DEBUG_FONT).drawString(x, y, text, Color.yellow);
+				break;
+				
+			case RIGHT:
+				FontUtils.drawRight(m_fonts.get(DEBUG_FONT), text, x,  y, 0, Color.yellow);
+				break;
+		}
 	}
 	
 	public void renderDebugText(String text, RenderPosition position) {
