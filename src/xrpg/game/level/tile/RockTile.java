@@ -19,7 +19,7 @@ public class RockTile extends Tile {
 	
 	@Override
 	public boolean mayPass(Level level, int xt, int yt, Entity entity) {
-		return false;
+		return Tile.getCornerMapValue(level.m_map, xt, yt, m_tileId) == Screen.CORNER_EMPTY;
 	}
 
 	@Override
