@@ -62,6 +62,7 @@ public class Player extends Entity {
 	
 	private int m_walkDist = 0;
 	private char m_life = MAX_LIFE;
+	public int m_money = 0;
 	private int m_hurtTime = 0;
 	private Direction m_dir = Direction.DOWN;
 	private Level m_level;
