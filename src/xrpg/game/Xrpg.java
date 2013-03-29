@@ -9,6 +9,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
+import xrpg.game.Screen.Align;
 import xrpg.game.entity.Player;
 import xrpg.game.level.Level;
 
@@ -35,10 +36,6 @@ public class Xrpg implements Runnable {
 	private InputHandler m_inputHandler;
 	private Level m_level;
 	
-	public float x = Screen.XTILES * Screen.TILESIZE / 2;
-	public float y = Screen.YTILES * Screen.TILESIZE / 2;
-	public float rotation = 0;
-	
 	public void start() {
 		m_running = true;
 		new Thread(this).start();
@@ -58,6 +55,14 @@ public class Xrpg implements Runnable {
 	
 	private void renderFocusGUI() {
 		// todo
+	}
+	
+	private static final int GUI_TOP_PADDING = Screen.TILESIZE / 4;
+	private static final int GUI_RIGHT_PADDING = Screen.TILESIZE / 4;
+	
+	private void renderGUI() throws IOException {
+		m_screen.render("gui_chest.png", (Screen.XTILES - 4) * Screen.TILESIZE, (Screen.YTILES - 1) * Screen.TILESIZE);
+		m_screen.renderText(String.valueOf(m_level.m_player.m_money), (Screen.XTILES - 1) * Screen.TILESIZE - GUI_RIGHT_PADDING, (Screen.YTILES - 1) * Screen.TILESIZE + GUI_TOP_PADDING, Align.RIGHT);
 	}
 	
 	private void tick(int delta) {
@@ -90,6 +95,8 @@ public class Xrpg implements Runnable {
 		// m_level.renderMinimap(this.screen, xScroll, yScroll);
 
 		// m_screen.renderAnnouncementText("text", "subText", 1.0f);
+		
+		renderGUI();
 		
 		if (!hasFocus()) {
 			renderFocusGUI();
